@@ -8,7 +8,6 @@ class Fan():
     oneHour = 3600
     twoHours = 7200
 
-
     def fanOn(self, timer):
         print("Fan ON with Timer")
         GPIO.output(12, GPIO.LOW)
@@ -20,8 +19,10 @@ class Fan():
     def fanOff(self):
         GPIO.output(12, GPIO.HIGH)
         GPIO.output(16, GPIO.HIGH)
-        if self.t2.is_alive():
+        try:
             self.t2.cancel()
+        except:
+            return
         
 
     def setStatus(self, status, time):
@@ -57,13 +58,13 @@ class Fan():
             sec_till_start = (now-startTimeToday).total_seconds()
             print(sec_till_start)
             
-        self.t2 = Timer(sec_till_start, self.fanOn(sec_till_start+duration))
+        self.t2 = Timer(sec_till_start, self.fanOn, [sec_till_start+duration])
         self.t2.start()
         
 
     def setOffTimer(self, timer):
         
-        self.t1 = Timer(3600, self.fanOff)
+        self.t1 = Timer(timer, self.fanOff)
         print("Off Timer startet: " + str(timer) )
         self.t1.start()
         
