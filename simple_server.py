@@ -1,7 +1,6 @@
 import RPi.GPIO as GPIO
 import os
 from fan import *
-from socket import error
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 host_name = '192.168.10.28'  # Change this to your Raspberry Pi IP address

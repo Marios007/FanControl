@@ -2,20 +2,18 @@ import RPi.GPIO as GPIO
 from datetime import datetime, timedelta
 from threading import Timer
 
-
 class Fan():
    
     oneHour = 3600
     twoHours = 7200
 
     def fanOn(self, timer):
-        print("Fan ON with Timer")
+        print("Fan ON with Timer: " + str(timer))
         GPIO.output(12, GPIO.LOW)
         GPIO.output(16, GPIO.LOW)
         print(timer)
         self.setOffTimer(timer)
         
-
     def fanOff(self):
         GPIO.output(12, GPIO.HIGH)
         GPIO.output(16, GPIO.HIGH)
@@ -24,7 +22,6 @@ class Fan():
         except:
             return
         
-
     def setStatus(self, status, time):
         if status == 0:
             return 'FAN is OFF'
@@ -34,7 +31,6 @@ class Fan():
         if status == 2:
             return ('FAN is ON from 5:00 to 6:00 ')
         
-
     # get timespamp + delta time
     def getTimeStamp(self, delta):
         min_added = delta / 60
@@ -49,26 +45,22 @@ class Fan():
         sec_till_start = 0
         
         if now.hour >= 5:
-            print('>5')
             sec_till_start = (startTimeTmr- now).total_seconds()
             print(sec_till_start)
 
         if now.hour < 5:
-            print('<5')
             sec_till_start = (now-startTimeToday).total_seconds()
             print(sec_till_start)
-            
-        self.t2 = Timer(sec_till_start, self.fanOn, [sec_till_start+duration])
+        print("Set On Timer startet: " + str(sec_till_start) + " with duration " + str(duration))
+        self.t2 = Timer(sec_till_start, self.fanOn, [duration])
         self.t2.start()
         
 
     def setOffTimer(self, timer):
-        
         self.t1 = Timer(timer, self.fanOff)
         print("Off Timer startet: " + str(timer) )
         self.t1.start()
         
-
 
     def __init__(self):
         print('fan init')
