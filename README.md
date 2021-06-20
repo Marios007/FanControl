@@ -1,2 +1,2 @@
 # FanControl
-Small Webserver to control a fan with raspberry pi
+Small python webserver to control a fan with raspberry pi
