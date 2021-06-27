@@ -34,27 +34,40 @@ class MyServer(BaseHTTPRequestHandler):
     <title>FAN Control</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 </head>
-<body style="width:320px; margin: 10px auto;">
+<body style="width:500px; margin: 10px auto;">
     <h1>FAN Control</h1>
+    
+    <p></p>
+   
+    <div style="font-size: xx-large;" id="fanStatus"></div>
+    <p></p>
+    <div style="font-size: xx-large;" id="timerStatus"></div>
+    <p></p>
     
     <form action="/on60">
         <input type="submit" style="font-size: xx-large;" value="SWITCH ON 1h" />
     </form>
+    
     <form action="/on120">
         <input type="submit" style="font-size: xx-large;" value="SWITCH ON 2h" />
     </form>
 
     <form action="/timerMode">
-        <input type="submit" style="font-size: xx-large;" value="Night Timer" />
-    </form
-    >
-    <form action="/off">
-        <input type="submit"  style="font-size: xx-large;" value="SWITCH OFF" />
+        <input type="submit" style="font-size: xx-large;" value="Night Timer ON" />
     </form>
-    <div id="fanStatus"></div>
+
+    <form action="/FanOff">
+        <input type="submit"  style="font-size: xx-large;" value="Fan OFF" />
+    </form>
+
+    <form action="/NightTimerOff">
+        <input type="submit"  style="font-size: xx-large;" value="Night Timer OFF" />
+    </form>
+    
 
     <script>
         document.getElementById("fanStatus").innerHTML = "{}";
+        document.getElementById("timerStatus").innerHTML = "{}";
 
     </script>
     <p></p>
@@ -70,7 +83,8 @@ class MyServer(BaseHTTPRequestHandler):
         except ConnectionResetError as identifier:
             print("ConnectionResetError")
 
-        statusText = ""
+        statusText = fan.getStatusText()
+        statusNightTimer = fan.getStatusTimer()
         
         if self.path=='/':
             GPIO.setmode(GPIO.BCM)
@@ -78,27 +92,32 @@ class MyServer(BaseHTTPRequestHandler):
             GPIO.setup(12, GPIO.OUT)
             GPIO.setup(16, GPIO.OUT)
 
-        elif self.path=='/off' or self.path=='/off?':
+        elif self.path=='/FanOff' or self.path=='/FanOff?':
             fan.fanOff()
             statusText = fan.setStatus(0,0)
             
-        elif self.path=='/on60'or self.path=='/on60?':
+        elif self.path=='/on60' or self.path=='/on60?':
             fan.fanOn(oneHour)
             statusText = fan.setStatus(1,oneHour)
             
-
-        elif self.path=='/on120'or self.path=='/on120?':
+        elif self.path=='/on120' or self.path=='/on120?':
             fan.fanOn(twoHours)
             statusText = fan.setStatus(1,twoHours)
 
-        
-        elif self.path=='/timerMode'or self.path=='/timerMode?':
-            
-            statusText = fan.setStatus(2,0)
+        elif self.path=='/timerMode' or self.path=='/timerMode?':
+            statusNightTimer = fan.setStatus(2,0)
             fan.setOnTimer(5,oneHour)
+
+        elif self.path=='/NightTimerOff' or self.path=='/NightTimerOff?':
+            statusNightTimer = fan.setStatus(3,0)
+            fan.nightTimerOff()
+        
+        # elif self.path=='/RefreshStatus' or self.path=='/RefreshStatus?':
+        #     statusText = fan.getStatusText()
+        #     statusNightTimer = fan.getStatusTimer()
             
 
-        self.wfile.write(html.format(statusText, temp[5:] ).encode("utf-8"))
+        self.wfile.write(html.format(statusText, statusNightTimer , temp[5:] ).encode("utf-8"))
 
 
 if __name__ == '__main__':
@@ -116,3 +135,4 @@ if __name__ == '__main__':
         http_server.server_close()
     except:
         fan.fanOff()
+        http_server.server_close()
