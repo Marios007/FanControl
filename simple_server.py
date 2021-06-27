@@ -37,7 +37,7 @@ class MyServer(BaseHTTPRequestHandler):
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 </head>
 <body style="width:500px; margin: 10px auto;">
-    <h1>FAN Control</h1>
+    <h1> FAN Control</h1>
     
     <p></p>
    
@@ -73,8 +73,9 @@ class MyServer(BaseHTTPRequestHandler):
 
     </script>
     <p></p>
-    <p>Current temperature is {}</p>
-    <p>Current humidity is {}</p>
+    <p>Temperature:  {}</p>
+    <p>Humidity:  {}</p>
+    <p>Pressure:  {}</p>
     <p></p>
     <p>Current GPU temperature is {}</p>
 </body>
@@ -90,6 +91,7 @@ class MyServer(BaseHTTPRequestHandler):
         statusNightTimer = fan.getStatusTimer()
         temp = sensor.getTemp()
         humid = sensor.getHumid()
+        pressure = sensor.getPressure()
         
         if self.path=='/':
             GPIO.setmode(GPIO.BCM)
@@ -122,7 +124,7 @@ class MyServer(BaseHTTPRequestHandler):
         #     statusNightTimer = fan.getStatusTimer()
             
 
-        self.wfile.write(html.format(statusText, statusNightTimer, temp, humid, gpuTemp[5:] ).encode("utf-8"))
+        self.wfile.write(html.format(statusText, statusNightTimer, temp, humid, pressure, gpuTemp[5:] ).encode("utf-8"))
 
 
 if __name__ == '__main__':
