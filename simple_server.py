@@ -1,6 +1,8 @@
+from sensor import Sensor
 import RPi.GPIO as GPIO
 import os
 from fan import *
+from sensor import *
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 host_name = '192.168.10.28'  # Change this to your Raspberry Pi IP address
@@ -71,13 +73,14 @@ class MyServer(BaseHTTPRequestHandler):
 
     </script>
     <p></p>
-    <p></p>
+    <p>Current temperature is {}</p>
+    <p>Current humidity is {}</p>
     <p></p>
     <p>Current GPU temperature is {}</p>
 </body>
 </html>
         '''
-        temp = os.popen("/opt/vc/bin/vcgencmd measure_temp").read()
+        gpuTemp = os.popen("/opt/vc/bin/vcgencmd measure_temp").read()
         try:
             self.do_HEAD()
         except ConnectionResetError as identifier:
@@ -85,6 +88,8 @@ class MyServer(BaseHTTPRequestHandler):
 
         statusText = fan.getStatusText()
         statusNightTimer = fan.getStatusTimer()
+        temp = sensor.getTemp()
+        humid = sensor.getHumid()
         
         if self.path=='/':
             GPIO.setmode(GPIO.BCM)
@@ -117,12 +122,13 @@ class MyServer(BaseHTTPRequestHandler):
         #     statusNightTimer = fan.getStatusTimer()
             
 
-        self.wfile.write(html.format(statusText, statusNightTimer , temp[5:] ).encode("utf-8"))
+        self.wfile.write(html.format(statusText, statusNightTimer, temp, humid, gpuTemp[5:] ).encode("utf-8"))
 
 
 if __name__ == '__main__':
     http_server = HTTPServer((host_name, host_port), MyServer)
     fan = Fan()
+    sensor = Sensor()
     #initialize the GPIO ports
     print("Server Starts - %s:%s" % (host_name, host_port))
     
