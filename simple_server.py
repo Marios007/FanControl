@@ -36,7 +36,7 @@ class MyServer(BaseHTTPRequestHandler):
     <title>FAN Control</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 </head>
-<body style="width:500px; margin: 10px auto;">
+<body style="width:400px; margin: 10px auto;">
     <h1> FAN Control</h1>
     
     <p></p>
@@ -54,13 +54,14 @@ class MyServer(BaseHTTPRequestHandler):
         <input type="submit" style="font-size: xx-large;" value="SWITCH ON 2h" />
     </form>
 
+    <form action="/FanOff">
+        <input type="submit"  style="font-size: xx-large;" value="Fan OFF" />
+    </form>
+
     <form action="/timerMode">
         <input type="submit" style="font-size: xx-large;" value="Night Timer ON" />
     </form>
 
-    <form action="/FanOff">
-        <input type="submit"  style="font-size: xx-large;" value="Fan OFF" />
-    </form>
 
     <form action="/NightTimerOff">
         <input type="submit"  style="font-size: xx-large;" value="Night Timer OFF" />
