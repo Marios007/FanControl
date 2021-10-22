@@ -1,19 +1,26 @@
 import smbus2
 import bme280
+import time
 
 
 class Sensor():
     
     port = 1
     address = 0x76
+    
     bus = smbus2.SMBus(port)
+    time.sleep(5)
+    #os.system('i2cdetect -y 1')
     
     bme280.load_calibration_params(bus, address)
+    time.sleep(1)
     data = bme280.sample(bus, address)
 
     _temp = data.temperature
     _humid = data.humidity
     _pressure = data.pressure
+
+
     def __init__(self):
         self.updateData()
 

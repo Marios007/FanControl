@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 import os
 from fan import *
 from sensor import *
+from logger import *
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 host_name = '192.168.10.28'  # Change this to your Raspberry Pi IP address
@@ -93,6 +94,8 @@ class MyServer(BaseHTTPRequestHandler):
         temp = sensor.getTemp()
         humid = sensor.getHumid()
         pressure = sensor.getPressure()
+
+        #logger.writeData(10)
         
         if self.path=='/':
             GPIO.setmode(GPIO.BCM)
@@ -132,6 +135,7 @@ if __name__ == '__main__':
     http_server = HTTPServer((host_name, host_port), MyServer)
     fan = Fan()
     sensor = Sensor()
+    #logger = Logger()
     #initialize the GPIO ports
     print("Server Starts - %s:%s" % (host_name, host_port))
     
@@ -141,7 +145,9 @@ if __name__ == '__main__':
         
     except KeyboardInterrupt:
         fan.fanOff()
+        #logger.closeDB()
         http_server.server_close()
     except:
         fan.fanOff()
+        #logger.closeDB()
         http_server.server_close()
