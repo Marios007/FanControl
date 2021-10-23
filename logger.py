@@ -1,7 +1,8 @@
 import mysql.connector
 import config
+from sensor import *
 from mysql.connector import Error
-import sys
+import threading
 
 class Logger():
 
@@ -26,8 +27,13 @@ class Logger():
     except Error as e:
         print("Error while connecting to MySQL", e)
 
+    sensorLog = Sensor()
 
-    def writeData(self, temperature, humidity, pressure):
+    def writeData(self):
+        temp = self.sensorLog.getTemp()
+        humid = self.sensorLog.getHumid()
+        pressure = self.sensorLog.getPressure()
+        print("write data ", temp, "  ", humid ,"  ", pressure)
         print("write data to DB")
         query = """INSERT INTO fanData (id, temperature, humidity, pressure) VALUES (1, 1, 1.1, 1.1, 1.1)"""
 

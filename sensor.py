@@ -1,6 +1,6 @@
 import smbus2
 import bme280
-import time
+
 
 
 class Sensor():

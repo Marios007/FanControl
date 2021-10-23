@@ -1,6 +1,7 @@
 from sensor import Sensor
 import RPi.GPIO as GPIO
 import os
+from threading import Timer
 from fan import *
 from sensor import *
 from logger import *
@@ -122,6 +123,7 @@ class MyServer(BaseHTTPRequestHandler):
         elif self.path=='/NightTimerOff' or self.path=='/NightTimerOff?':
             statusNightTimer = fan.setStatus(3,0)
             fan.nightTimerOff()
+            logger.writeData()
         
         # elif self.path=='/RefreshStatus' or self.path=='/RefreshStatus?':
         #     statusText = fan.getStatusText()
@@ -136,12 +138,13 @@ if __name__ == '__main__':
         http_server = HTTPServer((host_name, host_port), MyServer)
     except:
         os.system("sudo kill -9 $(ps -A | grep python | awk '{print $1}')")
+        print("kill python to free address")
         http_server = HTTPServer((host_name, host_port), MyServer)
     fan = Fan()
     sensor = Sensor()
     logger = Logger()
     #initialize the GPIO ports
-    print("Server Starts - %s:%s" % (host_name, host_port))
+    print("Server Starts - %s:%s" % (host_name, host_port)) 
     
 
     try:
