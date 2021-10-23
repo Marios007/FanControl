@@ -9,11 +9,11 @@ class Sensor():
     address = 0x76
     
     bus = smbus2.SMBus(port)
-    time.sleep(1)
+    #time.sleep(1)
     #os.system('i2cdetect -y 1')
     
     bme280.load_calibration_params(bus, address)
-    time.sleep(1)
+    #time.sleep(1)
     data = bme280.sample(bus, address)
 
     _temp = data.temperature
