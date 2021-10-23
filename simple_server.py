@@ -139,7 +139,7 @@ if __name__ == '__main__':
         http_server = HTTPServer((host_name, host_port), MyServer)
     fan = Fan()
     sensor = Sensor()
-    #logger = Logger()
+    logger = Logger()
     #initialize the GPIO ports
     print("Server Starts - %s:%s" % (host_name, host_port))
     
