@@ -149,9 +149,9 @@ if __name__ == '__main__':
         
     except KeyboardInterrupt:
         fan.fanOff()
-        #logger.closeDB()
+        logger.closeDB()
         http_server.server_close()
     except:
         fan.fanOff()
-        #logger.closeDB()
+        logger.closeDB()
         http_server.server_close()
