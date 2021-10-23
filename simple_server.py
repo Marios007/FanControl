@@ -132,7 +132,11 @@ class MyServer(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    http_server = HTTPServer((host_name, host_port), MyServer)
+    try:
+        http_server = HTTPServer((host_name, host_port), MyServer)
+    except:
+        os.system("sudo kill -9 $(ps -A | grep python | awk '{print $1}')")
+        http_server = HTTPServer((host_name, host_port), MyServer)
     fan = Fan()
     sensor = Sensor()
     #logger = Logger()

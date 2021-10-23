@@ -9,7 +9,7 @@ class Sensor():
     address = 0x76
     
     bus = smbus2.SMBus(port)
-    time.sleep(5)
+    time.sleep(1)
     #os.system('i2cdetect -y 1')
     
     bme280.load_calibration_params(bus, address)
