@@ -30,12 +30,16 @@ class Logger():
     sensorLog = Sensor()
 
     def writeData(self):
-        temp = self.sensorLog.getTemp()
-        humid = self.sensorLog.getHumid()
-        pressure = self.sensorLog.getPressure()
+        temp = float(self.sensorLog.getTemp())
+        humid = float(self.sensorLog.getHumid())
+        pressure = float(self.sensorLog.getPressure())
         print("write data ", temp, "  ", humid ,"  ", pressure)
         print("write data to DB")
-        query = """INSERT INTO fanData (id, temperature, humidity, pressure) VALUES (1, 1, 1.1, 1.1, 1.1)"""
+        query = """INSERT INTO fanData (id, temperature, humidity, pressure) VALUES (1, %s, %s, %s)"""
+        self.cursor.execute("INSERT INTO fanData (id, temperature, humidity, pressure) VALUES (1, %3.2f, %3.2f, %3.2f)", temp, humid, pressure)
+        self.connection.commit()
+
+
 
     def closeDB(self):
         if self.connection.is_connected():
