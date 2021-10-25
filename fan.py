@@ -3,22 +3,24 @@ from datetime import datetime, timedelta
 from threading import Timer
 
 class Fan():
-   
     oneHour = 3600
     twoHours = 7200
     statusText = "Status FAN "
     statusNightTimer = "Status Timer "
+    statusFan = False
 
 
     def fanOn(self, timer):
         print("Fan ON with Timer: " + str(timer))
         GPIO.output(12, GPIO.LOW)
         GPIO.output(16, GPIO.LOW)
+        self.statusFan = True
         self.setOffTimer(timer)
         
     def fanOff(self):
         GPIO.output(12, GPIO.HIGH)
         GPIO.output(16, GPIO.HIGH)
+        self.statusFan = False
     
     def nightTimerOff(self):
         try:
@@ -77,6 +79,9 @@ class Fan():
         self.t1 = Timer(timer, self.fanOff)
         print("Off Timer startet: " + str(timer) )
         self.t1.start()
+
+    def getStatusFan(self):
+        return self.statusFan
         
 
     def __init__(self):

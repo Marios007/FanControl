@@ -6,7 +6,9 @@ import threading
 
 class Logger():
 
-    
+    def __init__(self, fan):
+        self.fan = fan
+
     try:
         connection = mysql.connector.connect(
             user=config.username,
@@ -35,12 +37,13 @@ class Logger():
         pressure = self.sensorLog.getPressure()
         print("write data ", temp, "  ", humid ,"  ", pressure)
         print("write data to DB")
+        print(self.fan.getStatusFan())
         query = """INSERT INTO fanData (temperature, humidity, pressure) VALUES ( %s, %s , %s)"""
         tuple1 = (temp, humid, pressure)
         self.cursor.execute(query, tuple1)
         self.connection.commit()
         threading.Timer(60.0, self.writeData).start()
-        
+
 
 
 

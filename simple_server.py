@@ -144,7 +144,7 @@ if __name__ == '__main__':
     sensor = Sensor()
     #initialize the GPIO ports
     print("Server Starts - %s:%s" % (host_name, host_port)) 
-    logger = Logger()
+    logger = Logger(fan)
     print("Start logger")
     logger.writeData()
     
