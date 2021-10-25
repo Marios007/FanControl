@@ -57,6 +57,7 @@ class Fan():
         addDeltaTime = addDeltaTime.strftime("%H:%M")
         return addDeltaTime
 
+
     def setOnTimer(self, hour, duration):
         now = datetime.today()
         startTimeTmr = now.replace(day=(now.day)+1, hour=hour, minute=0, second=0)
@@ -79,10 +80,11 @@ class Fan():
         self.t1 = Timer(timer, self.fanOff)
         print("Off Timer startet: " + str(timer) )
         self.t1.start()
+        
 
     def getStatusFan(self):
         return self.statusFan
-        
+
 
     def __init__(self):
         print('fan init')
