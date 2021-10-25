@@ -70,11 +70,10 @@ class MyServer(BaseHTTPRequestHandler):
     </form>
 
     <form>
-      <input type="button" onclick="window.location.href = '192.168.10.28/graph.html';" value="w3docs"/>
+      <input type="button" onclick="window.location.href = 'http://192.168.10.28/graph.html';" value="Graph"/>
     </form>
 
-    <iframe src="http://192.168.10.28:3000/d-solo/1PEcReiRz/kitchen?orgId=1&from=1635165663467&to=1635187263468&panelId=2" width="650" height="400" frameborder="0"></iframe>    
-
+<iframe src="http://192.168.10.28:3000/d-solo/1PEcReiRz/kitchen?orgId=1&panelId=6" width="650" height="400" frameborder="0"></iframe>
     <script>
         document.getElementById("fanStatus").innerHTML = "{}";
         document.getElementById("timerStatus").innerHTML = "{}";
