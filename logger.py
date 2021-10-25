@@ -36,12 +36,11 @@ class Logger():
         print("write data ", temp, "  ", humid ,"  ", pressure)
         print("write data to DB")
         #query = """INSERT INTO fanData (id, temperature, humidity, pressure) VALUES (1, %s, %s, %s)"""
-        query = """INSERT INTO fanData (id, temperature, humidity, pressure) VALUES (1, %s, %s , %s)"""
+        query = """INSERT INTO fanData (temperature, humidity, pressure) VALUES ( %s, %s , %s)"""
         tuple1 = (temp, humid, pressure)
-        print(query)
         self.cursor.execute(query, tuple1)
-        #self.cursor.execute("INSERT INTO fanData (id, temperature, humidity, pressure) VALUES (1, %3.2f, %3.2f, %3.2f)", temp, humid, pressure)
         self.connection.commit()
+        
 
 
 
