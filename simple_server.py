@@ -92,9 +92,9 @@ class MyServer(BaseHTTPRequestHandler):
 
         statusText = fan.getStatusText()
         statusNightTimer = fan.getStatusTimer()
-        temp = sensor.getTemp()
-        humid = sensor.getHumid()
-        pressure = sensor.getPressure()
+        temp = sensor.getTempStr()
+        humid = sensor.getHumidStr()
+        pressure = sensor.getPressureStr()
 
         #logger.writeData(10)
         

@@ -30,9 +30,9 @@ class Logger():
     sensorLog = Sensor()
 
     def writeData(self):
-        temp = float(self.sensorLog.getTemp())
-        humid = float(self.sensorLog.getHumid())
-        pressure = float(self.sensorLog.getPressure())
+        temp = self.sensorLog.getTemp()
+        humid = self.sensorLog.getHumid()
+        pressure = self.sensorLog.getPressure()
         print("write data ", temp, "  ", humid ,"  ", pressure)
         print("write data to DB")
         query = """INSERT INTO fanData (id, temperature, humidity, pressure) VALUES (1, %s, %s, %s)"""
@@ -46,6 +46,9 @@ class Logger():
                 self.cursor.close()
                 self.connection.close()
                 print("MySQL connection is closed")
+
+
+
 
 # MariaDB [fanDB]> SHOW COLUMNS FROM fanData;
 # id int(11)

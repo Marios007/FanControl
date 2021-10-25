@@ -30,20 +30,35 @@ class Sensor():
         self._humid = self.data.humidity
         self. _pressure = self.data.pressure
 
+    def getTempStr(self):
+        self.updateData()
+        temp = str(self.getTemp()) 
+        temp = temp[:5] + "'C"
+        return temp
+
+    def getHumidStr(self):
+        self.updateData()
+        humid = str(self.getHumid())
+        humid = humid[:5] + "%"
+        return humid
+
+    def getPressureStr(self):
+        self.updateData()
+        pressure = str(self.getPressure())
+        pressure = pressure + "hPa"
+        return pressure
+
     def getTemp(self):
         self.updateData()
-        temp = str(self._temp) 
-        temp = temp[:5] + "'C"
+        temp = float(self._temp) 
         return temp
 
     def getHumid(self):
         self.updateData()
-        humid = str(self._humid)
-        humid = humid[:5] + "%"
+        humid = float(self._humid)
         return humid
 
     def getPressure(self):
         self.updateData()
-        pressure = str(self._pressure)
-        pressure = pressure + "hPa"
+        pressure = float(self._pressure)
         return pressure
