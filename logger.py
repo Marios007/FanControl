@@ -35,11 +35,11 @@ class Logger():
         pressure = self.sensorLog.getPressure()
         print("write data ", temp, "  ", humid ,"  ", pressure)
         print("write data to DB")
-        #query = """INSERT INTO fanData (id, temperature, humidity, pressure) VALUES (1, %s, %s, %s)"""
         query = """INSERT INTO fanData (temperature, humidity, pressure) VALUES ( %s, %s , %s)"""
         tuple1 = (temp, humid, pressure)
         self.cursor.execute(query, tuple1)
         self.connection.commit()
+        threading.Timer(60.0, self.writeData).start()
         
 
 
