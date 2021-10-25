@@ -123,7 +123,6 @@ class MyServer(BaseHTTPRequestHandler):
         elif self.path=='/NightTimerOff' or self.path=='/NightTimerOff?':
             statusNightTimer = fan.setStatus(3,0)
             fan.nightTimerOff()
-            logger.writeData()
         
         # elif self.path=='/RefreshStatus' or self.path=='/RefreshStatus?':
         #     statusText = fan.getStatusText()
