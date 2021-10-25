@@ -68,8 +68,7 @@ class MyServer(BaseHTTPRequestHandler):
     <form action="/NightTimerOff">
         <input type="submit"  style="font-size: xx-large;" value="Night Timer OFF" />
     </form>
-    <iframe src="http://192.168.10.28:3000/d-solo/1PEcReiRz/kitchen?orgId=1&from=1635175200869&to=1635186000869&panelId=6" width="450" height="200" frameborder="0"></iframe>
-    
+    <iframe src="http://192.168.10.28:3000/d-solo/1PEcReiRz/kitchen?orgId=1&from=1635165663467&to=1635187263468&panelId=2" width="450" height="200" frameborder="0"></iframe>    
 
     <script>
         document.getElementById("fanStatus").innerHTML = "{}";
