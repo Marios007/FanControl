@@ -70,10 +70,10 @@ class MyServer(BaseHTTPRequestHandler):
     </form>
 
     <form>
-      <input type="button" onclick="window.location.href = 'https://de.w3docs.com';" value="w3docs"/>
+      <input type="button" onclick="window.location.href = '192.168.10.28/graph.html';" value="w3docs"/>
     </form>
 
-    <iframe src="http://192.168.10.28:3000/d-solo/1PEcReiRz/kitchen?orgId=1&from=1635165663467&to=1635187263468&panelId=2" width="450" height="200" frameborder="0"></iframe>    
+    <iframe src="http://192.168.10.28:3000/d-solo/1PEcReiRz/kitchen?orgId=1&from=1635165663467&to=1635187263468&panelId=2" width="650" height="400" frameborder="0"></iframe>    
 
     <script>
         document.getElementById("fanStatus").innerHTML = "{}";
@@ -128,10 +128,6 @@ class MyServer(BaseHTTPRequestHandler):
         elif self.path=='/NightTimerOff' or self.path=='/NightTimerOff?':
             statusNightTimer = fan.setStatus(3,0)
             fan.nightTimerOff()
-
-        elif self.path=='/Graph' or self.path=='/Graph?':
-            self.path = 'graph.html'
-            
         
         # elif self.path=='/RefreshStatus' or self.path=='/RefreshStatus?':
         #     statusText = fan.getStatusText()
