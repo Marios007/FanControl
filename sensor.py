@@ -50,15 +50,15 @@ class Sensor():
 
     def getTemp(self):
         self.updateData()
-        temp = float(self._temp)
+        temp = round(float(self._temp),2)
         return temp[:5] 
 
     def getHumid(self):
         self.updateData()
-        humid = float(self._humid)
+        humid = round(float(self._humid),2)
         return humid[:5] 
 
     def getPressure(self):
         self.updateData()
-        pressure = float(self._pressure)
-        return pressure[:5] 
+        pressure = round(float(self._pressure),2)
+        return pressure
