@@ -68,6 +68,11 @@ class MyServer(BaseHTTPRequestHandler):
     <form action="/NightTimerOff">
         <input type="submit"  style="font-size: xx-large;" value="Night Timer OFF" />
     </form>
+
+    <form action="/Graph">
+        <input type="submit"  style="font-size: xx-large;" value="Graph" />
+    </form>
+
     <iframe src="http://192.168.10.28:3000/d-solo/1PEcReiRz/kitchen?orgId=1&from=1635165663467&to=1635187263468&panelId=2" width="450" height="200" frameborder="0"></iframe>    
 
     <script>
@@ -123,6 +128,10 @@ class MyServer(BaseHTTPRequestHandler):
         elif self.path=='/NightTimerOff' or self.path=='/NightTimerOff?':
             statusNightTimer = fan.setStatus(3,0)
             fan.nightTimerOff()
+
+        elif self.path=='/Graph' or self.path=='/Graph?':
+            self.path = 'graph.html'
+            
         
         # elif self.path=='/RefreshStatus' or self.path=='/RefreshStatus?':
         #     statusText = fan.getStatusText()
