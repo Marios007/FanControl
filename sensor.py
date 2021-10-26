@@ -28,7 +28,7 @@ class Sensor():
         self.data = bme280.sample(self.bus, self.address)
         self._temp = self.data.temperature
         self._humid = self.data.humidity
-        self. _pressure = self.data.pressure
+        self. _pressure = self.data.pressure+60.9
 
     def getTempStr(self):
         self.updateData()
