@@ -4,8 +4,6 @@ import json
 import config
 
 
-
-
 def extractData(data):
     #ETH: 1027
     #Casper: 5899
@@ -35,10 +33,17 @@ try:
   #print(data)
   data = allData['data']
   etherData = data['1027']['quote']['EUR']['price']
-  csprData = data['5899']['quote']
-  celoData = data['5567']['quote']
-  float(etherData)
-  print(etherData*0.80157)
+  csprData = data['5899']['quote']['EUR']['price']
+  celoData = data['5567']['quote']['EUR']['price']
+  etherData  = float(round((etherData*0.80157), 2))
+  csprData = float(round((csprData*67990), 2))
+  celoData = float(round((csprData*67990), 2))
+
+  
+  print("Etherium: " + str(etherData) + " EUR")
+  print("Casper: " + str(csprData) + " EUR")
+  print("Celo: " + str(csprData) + " EUR")
+
   #print(csprData)
   #print(celoData)
 
