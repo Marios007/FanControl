@@ -59,9 +59,9 @@ class CryptoApiLogger():
         except (ConnectionError, Timeout, TooManyRedirects) as e:
           print(e)
 
-        etherPrice = self.data['1027']['quote']['EUR']['price']
-        csprPrice = self.data['5899']['quote']['EUR']['price']
-        celoPrice = self.data['5567']['quote']['EUR']['price']
+        etherPrice = data['1027']['quote']['EUR']['price']
+        csprPrice = data['5899']['quote']['EUR']['price']
+        celoPrice = data['5567']['quote']['EUR']['price']
         # print(self.data['1027']['quote']['EUR'])
         etherTotal = float(round((etherPrice*config.amountEther), 2))
         csprTotal = float(round((csprPrice*config.amountCspr), 2))
