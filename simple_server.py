@@ -146,7 +146,7 @@ if __name__ == '__main__':
     fan = Fan()
     sensor = Sensor()
     crypto = CryptoApiLogger()
-    crypto.extractData()
+    crypto.writeData()
     #initialize the GPIO ports
     print("Server Starts - %s:%s" % (host_name, host_port)) 
     logger = Logger(fan)

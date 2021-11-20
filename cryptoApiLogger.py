@@ -55,14 +55,11 @@ class CryptoApiLogger():
   except Error as e:
     print("Error while connecting to MySQL", e)
 
-  def storeData(self):
-    return 0 
     # Data structure
     # table: cryptoData
     # id int, data_timestamp timestamp,  etherPrice float, csprPrice float, celoPrice float, etherEur float, csprEur float,  celoEur, totalEur float
 
   def writeData(self):
-
     etherPrice = self.data['1027']['quote']['EUR']['price']
     csprPrice = self.data['5899']['quote']['EUR']['price']
     celoPrice = self.data['5567']['quote']['EUR']['price']
@@ -77,8 +74,6 @@ class CryptoApiLogger():
     self.connection.commit()
     threading.Timer(600.0, self.writeData).start()
 
-
-    
     #print("Etherium: " + str(etherTotal) + " EUR")
     #print("Casper: " + str(csprTotal) + " EUR")
     #print("Celo: " + str(celoTotal) + " EUR")
