@@ -1,10 +1,10 @@
 from sensor import Sensor
 import RPi.GPIO as GPIO
 import os
-from threading import Timer
 from fan import *
 from sensor import *
 from logger import *
+from cryptoApiLogger import *
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 host_name = '192.168.10.28'  # Change this to your Raspberry Pi IP address
@@ -145,6 +145,8 @@ if __name__ == '__main__':
         http_server = HTTPServer((host_name, host_port), MyServer)
     fan = Fan()
     sensor = Sensor()
+    crypto = CryptoApiLogger()
+    crypto.extractData()
     #initialize the GPIO ports
     print("Server Starts - %s:%s" % (host_name, host_port)) 
     logger = Logger(fan)
