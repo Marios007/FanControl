@@ -68,7 +68,7 @@ class CryptoApiLogger():
     csprTotal  = float(round((csprPrice*config.amountCspr), 2))
     celoTotal  = float(round((celoPrice*config.amountCelo), 2))
     totalEur = round((etherTotal + csprTotal + celoTotal), 2)
-    query = """INSERT INTO CryptoData (etherPrice, csprPrice, celoPrice, etherEur, csprEur, celoEur, totalEur) VALUES ( %s, %s, %s, %s, %s, %s)"""
+    query = """INSERT INTO CryptoData (etherPrice, csprPrice, celoPrice, etherEur, csprEur, celoEur, totalEur) VALUES ( %s, %s, %s, %s, %s, %s, %s)"""
     newTuple = (etherPrice, csprPrice, celoPrice, etherTotal, csprTotal, celoTotal, totalEur)
     self.cursor.execute(query, newTuple)
     self.connection.commit()
