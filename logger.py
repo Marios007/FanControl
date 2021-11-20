@@ -50,12 +50,3 @@ class Logger():
                 self.connection.close()
                 print("MySQL connection is closed")
 
-
-
-
-# MariaDB [fanDB]> SHOW COLUMNS FROM fanData;
-# id int(11)
-# data_timestamp timestamp
-# temperature float
-# humidity float
-# pressure float

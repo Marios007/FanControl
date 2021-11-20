@@ -2,6 +2,9 @@ from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 import config
+import threading
+import mysql.connector
+from mysql.connector import Error
 
 
 class CryptoApiLogger():
@@ -32,19 +35,51 @@ class CryptoApiLogger():
   except (ConnectionError, Timeout, TooManyRedirects) as e:
     print(e)
 
-  def storeData():
-    return 0 
+  try:
+        connection = mysql.connector.connect(
+            user=config.username,
+            password=config.password,
+            host="localhost",
+            port=3306,
+            database=config.database
+        )
 
-  def extractData(self):
-    etherData = self.data['1027']['quote']['EUR']['price']
-    csprData = self.data['5899']['quote']['EUR']['price']
-    celoData = self.data['5567']['quote']['EUR']['price']
-    etherData  = float(round((etherData*config.amountEther), 2))
-    csprData   = float(round((csprData*config.amountCspr), 2))
-    celoData   = float(round((celoData*config.amountCelo), 2))
-    total = round((etherData + csprData + celoData), 2)
+        if connection.is_connected():
+            db_Info = connection.get_server_info()
+            print("Connected to MySQL Server version ", db_Info)
+            cursor = connection.cursor()
+            cursor.execute("select database();")
+            record = cursor.fetchone()
+            print("You're connected to database: ", record)
+            
+  except Error as e:
+    print("Error while connecting to MySQL", e)
+
+  def storeData(self):
+    return 0 
+    # Data structure
+    # table: cryptoData
+    # id int, data_timestamp timestamp,  etherPrice float, csprPrice float, celoPrice float, etherEur float, csprEur float,  celoEur, totalEur float
+
+  def writeData(self):
+
+    etherPrice = self.data['1027']['quote']['EUR']['price']
+    csprPrice = self.data['5899']['quote']['EUR']['price']
+    celoPrice = self.data['5567']['quote']['EUR']['price']
+    #print(self.data['1027']['quote']['EUR'])
+    etherTotal  = float(round((etherPrice*config.amountEther), 2))
+    csprTotal  = float(round((csprPrice*config.amountCspr), 2))
+    celoTotal  = float(round((celoPrice*config.amountCelo), 2))
+    totalEur = round((etherTotal + csprTotal + celoTotal), 2)
+    query = """INSERT INTO CryptoData (etherPrice, csprPrice, celoPrice, etherEur, csprEur, celoEur, totalEur) VALUES ( %s, %s, %s, %s, %s, %s)"""
+    newTuple = (etherPrice, csprPrice, celoPrice, etherTotal, csprTotal, celoTotal, totalEur)
+    self.cursor.execute(query, newTuple)
+    self.connection.commit()
+    threading.Timer(600.0, self.writeData).start()
+
+
     
-    print("Etherium: " + str(etherData) + " EUR")
-    print("Casper: " + str(csprData) + " EUR")
-    print("Celo: " + str(celoData) + " EUR")
-    print("Total: " + str(total))
+    #print("Etherium: " + str(etherTotal) + " EUR")
+    #print("Casper: " + str(csprTotal) + " EUR")
+    #print("Celo: " + str(celoTotal) + " EUR")
+    #print("Total: " + str(totalEur))
