@@ -72,7 +72,7 @@ class CryptoApiLogger():
                     etherTotal, csprTotal, celoTotal, totalEur)
         self.cursor.execute(query, newTuple)
         self.connection.commit()
-        threading.Timer(600.0, self.writeData).start()
+        threading.Timer(300.0, self.writeData).start()
 
         #print("Etherium: " + str(etherTotal) + " EUR")
         #print("Casper: " + str(csprTotal) + " EUR")
