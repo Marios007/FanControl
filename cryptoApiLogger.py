@@ -3,6 +3,7 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 import config
 import threading
+import time
 import mysql.connector
 from mysql.connector import Error
 
@@ -58,6 +59,8 @@ class CryptoApiLogger():
 
         except (ConnectionError, Timeout, TooManyRedirects) as e:
           print(e)
+          time.sleep(10)
+          self.writeData()
 
         etherPrice = data['1027']['quote']['EUR']['price']
         csprPrice = data['5899']['quote']['EUR']['price']
