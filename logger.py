@@ -27,7 +27,7 @@ class Logger():
             print("You're connected to database: ", record)
             
     except Error as e:
-        print("Error while connecting to MySQL", e)
+        print("Error while connecting to FanDB ", e)
 
     sensorLog = Sensor()
 
