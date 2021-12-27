@@ -41,7 +41,7 @@ class CryptoApiLogger():
             print("You're connected to database: ", record)
 
     except Error as e:
-        print("Error while connecting to MySQL", e)
+        print("Error while connecting to cryptoData", e)
 
         # Data structure
         # table: cryptoData
