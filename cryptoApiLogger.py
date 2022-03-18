@@ -57,7 +57,7 @@ class CryptoApiLogger():
           data = allData['data']
           # print(data)
 
-        except (ConnectionError, Timeout, TooManyRedirects) as e:
+        except (ConnectionError, Timeout, TooManyRedirects, KeyError) as e:
           print(e)
           time.sleep(10)
           self.writeData()
