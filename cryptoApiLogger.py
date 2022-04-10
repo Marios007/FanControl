@@ -59,7 +59,7 @@ class CryptoApiLogger():
 
         except (ConnectionError, Timeout, TooManyRedirects, KeyError) as e:
           print(e)
-          time.sleep(10)
+          time.sleep(60)
           self.writeData()
 
         etherPrice = data['1027']['quote']['EUR']['price']
