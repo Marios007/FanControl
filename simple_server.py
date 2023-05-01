@@ -88,7 +88,7 @@ class MyServer(BaseHTTPRequestHandler):
 </body>
 </html>
         '''
-        gpuTemp = os.popen("/opt/vc/bin/vcgencmd measure_temp").read()
+        gpuTemp = os.popen("/usr/bin/vcgencmd measure_temp").read()
         try:
             self.do_HEAD()
         except ConnectionResetError as identifier:
