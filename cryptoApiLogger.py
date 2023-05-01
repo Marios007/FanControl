@@ -68,7 +68,7 @@ class CryptoApiLogger():
                       etherTotal, csprTotal, celoTotal, totalEur)
           self.cursor.execute(query, newTuple)
           self.connection.commit()
-          threading.Timer(300.0, self.writeData).start()
+          threading.Timer(3600.0, self.writeData).start()
 
         except (ConnectionError, Timeout, TooManyRedirects, KeyError) as e:
           print(e)

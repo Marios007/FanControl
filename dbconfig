@@ -1,0 +1,31 @@
+MariaDB [FanDB]> DESCRIBE cryptoData;
++----------------+-----------+------+-----+---------------------+-------------------------------+
+| Field          | Type      | Null | Key | Default             | Extra                         |
++----------------+-----------+------+-----+---------------------+-------------------------------+
+| id             | int(11)   | NO   | PRI | NULL                | auto_increment                |
+| data_timestamp | timestamp | NO   |     | current_timestamp() | on update current_timestamp() |
+| etherPrice     | float     | YES  |     | NULL                |                               |
+| csprPrice      | float     | YES  |     | NULL                |                               |
+| celoPrice      | float     | YES  |     | NULL                |                               |
+| etherEur       | float     | YES  |     | NULL                |                               |
+| csprEur        | float     | YES  |     | NULL                |                               |
+| celoEur        | float     | YES  |     | NULL                |                               |
+| totalEur       | float     | YES  |     | NULL                |                               |
++----------------+-----------+------+-----+---------------------+-------------------------------+
+9 rows in set (0.005 sec)
+
+MariaDB [FanDB]> ALTER TABLE fanData MODIFY id int(11) NOT NULL AUTO_INCREMENT;
+Query OK, 0 rows affected (0.069 sec)              
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [FanDB]> DESCRIBE fanData;
++-------------+----------+------+-----+---------+----------------+
+| Field       | Type     | Null | Key | Default | Extra          |
++-------------+----------+------+-----+---------+----------------+
+| id          | int(11)  | NO   | PRI | NULL    | auto_increment |
+| temperature | float    | YES  |     | NULL    |                |
+| humidity    | float    | YES  |     | NULL    |                |
+| pressure    | float    | YES  |     | NULL    |                |
+| statusFan   | tinytext | YES  |     | NULL    |                |
++-------------+----------+------+-----+---------+----------------+
+5 rows in set (0.005 sec)

@@ -41,7 +41,7 @@ class Logger():
         tuple1 = (temp, humid, pressure, fanStatus)
         self.cursor.execute(query, tuple1)
         self.connection.commit()
-        threading.Timer(60.0, self.writeData).start()
+        threading.Timer(120.0, self.writeData).start()
 
 
     def closeDB(self):
