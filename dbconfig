@@ -19,13 +19,14 @@ Query OK, 0 rows affected (0.069 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 
 MariaDB [FanDB]> DESCRIBE fanData;
-+-------------+----------+------+-----+---------+----------------+
-| Field       | Type     | Null | Key | Default | Extra          |
-+-------------+----------+------+-----+---------+----------------+
-| id          | int(11)  | NO   | PRI | NULL    | auto_increment |
-| temperature | float    | YES  |     | NULL    |                |
-| humidity    | float    | YES  |     | NULL    |                |
-| pressure    | float    | YES  |     | NULL    |                |
-| statusFan   | tinytext | YES  |     | NULL    |                |
-+-------------+----------+------+-----+---------+----------------+
-5 rows in set (0.005 sec)
++----------------+-----------+------+-----+---------------------+-------------------------------+
+| Field          | Type      | Null | Key | Default             | Extra                         |
++----------------+-----------+------+-----+---------------------+-------------------------------+
+| id             | int(11)   | NO   | PRI | NULL                | auto_increment                |
+| temperature    | float     | YES  |     | NULL                |                               |
+| humidity       | float     | YES  |     | NULL                |                               |
+| pressure       | float     | YES  |     | NULL                |                               |
+| statusFan      | tinytext  | YES  |     | NULL                |                               |
+| data_timestamp | timestamp | NO   |     | current_timestamp() | on update current_timestamp() |
++----------------+-----------+------+-----+---------------------+-------------------------------+
+6 rows in set (0,004 sec)
