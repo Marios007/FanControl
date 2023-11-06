@@ -1,4 +1,4 @@
-import smbus2
+from smbus2 import SMBus
 import bme280
 
 
@@ -8,7 +8,7 @@ class Sensor():
     port = 1
     address = 0x76
     
-    bus = smbus2.SMBus(port)
+    bus = SMBus(port)
     #time.sleep(1)
     #os.system('i2cdetect -y 1')
     

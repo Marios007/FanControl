@@ -30,3 +30,5 @@ MariaDB [FanDB]> DESCRIBE fanData;
 | data_timestamp | timestamp | NO   |     | current_timestamp() | on update current_timestamp() |
 +----------------+-----------+------+-----+---------------------+-------------------------------+
 6 rows in set (0,004 sec)
+
+CREATE TABLE fanData (ID INT NOT NULL AUTO_INCREMENT,temperature float, humidity float, pressure float, statusFan tinytext,data_timestamp timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),PRIMARY KEY (ID));
