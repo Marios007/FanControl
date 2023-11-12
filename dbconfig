@@ -26,7 +26,7 @@ MariaDB [FanDB]> DESCRIBE fanData;
 | temperature    | float     | YES  |     | NULL                |                               |
 | humidity       | float     | YES  |     | NULL                |                               |
 | pressure       | float     | YES  |     | NULL                |                               |
-| statusFan      | tinytext  | YES  |     | NULL                |                               |
+| statusFan      | int(2)    | YES  |     | NULL                |                               |
 | data_timestamp | timestamp | NO   |     | current_timestamp() | on update current_timestamp() |
 +----------------+-----------+------+-----+---------------------+-------------------------------+
 6 rows in set (0,004 sec)

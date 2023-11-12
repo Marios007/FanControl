@@ -52,28 +52,27 @@ class CryptoApiLogger():
         session.headers.update(self.headers)
         
         try:
-          response = session.get(self.url, params=self.parameters)
-          allData = json.loads(response.text)
-          data = allData['data']
-          # print(data)
-          etherPrice = data['1027']['quote']['EUR']['price']
-          csprPrice = data['5899']['quote']['EUR']['price']
-          celoPrice = data['5567']['quote']['EUR']['price']
-          etherTotal = float(round((etherPrice*config.amountEther), 2))
-          csprTotal = float(round((csprPrice*config.amountCspr), 2))
-          celoTotal = float(round((celoPrice*config.amountCelo), 2))
-          totalEur = round((etherTotal + csprTotal + celoTotal), 2)
-          query = """INSERT INTO cryptoData (etherPrice, csprPrice, celoPrice, etherEur, csprEur, celoEur, totalEur) VALUES ( %s, %s, %s, %s, %s, %s, %s)"""
-          newTuple = (etherPrice, csprPrice, celoPrice,
-                      etherTotal, csprTotal, celoTotal, totalEur)
-          self.cursor.execute(query, newTuple)
-          self.connection.commit()
-          threading.Timer(1200.0, self.writeData).start()
+            response = session.get(self.url, params=self.parameters)
+            allData = json.loads(response.text)
+            data = allData['data']
+            # print(data)
+            etherPrice = data['1027']['quote']['EUR']['price']
+            csprPrice = data['5899']['quote']['EUR']['price']
+            celoPrice = data['5567']['quote']['EUR']['price']
+            etherTotal = float(round((etherPrice*config.amountEther), 2))
+            csprTotal = float(round((csprPrice*config.amountCspr), 2))
+            celoTotal = float(round((celoPrice*config.amountCelo), 2))
+            totalEur = round((etherTotal + csprTotal + celoTotal), 2)
+            query = """INSERT INTO cryptoData (etherPrice, csprPrice, celoPrice, etherEur, csprEur, celoEur, totalEur) VALUES ( %s, %s, %s, %s, %s, %s, %s)"""
+            newTuple = (etherPrice, csprPrice, celoPrice,etherTotal, csprTotal, celoTotal, totalEur)
+            self.cursor.execute(query, newTuple)
+            self.connection.commit()
+            threading.Timer(1200.0, self.writeData).start()
 
         except (ConnectionError, Timeout, TooManyRedirects, KeyError) as e:
-          print(e)
-          time.sleep(60)
-          self.writeData()
+            print(e)
+            time.sleep(60)
+            self.writeData()
 
         # print(self.data['1027']['quote']['EUR'])
         

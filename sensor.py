@@ -4,14 +4,14 @@ import bme280
 
 
 class Sensor():
-    
+
     port = 1
     address = 0x76
-    
+
     bus = SMBus(port)
     #time.sleep(1)
     #os.system('i2cdetect -y 1')
-    
+
     bme280.load_calibration_params(bus, address)
     #time.sleep(1)
     data = bme280.sample(bus, address)
