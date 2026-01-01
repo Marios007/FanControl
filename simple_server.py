@@ -7,7 +7,7 @@ from logger import *
 from cryptoApiLogger import *
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-host_name = '192.168.10.28'  # Change this to your Raspberry Pi IP address
+host_name = '192.168.178.38'  # Change this to your Raspberry Pi IP address
 host_port = 8000
 
 oneHour = 3600
@@ -70,10 +70,10 @@ class MyServer(BaseHTTPRequestHandler):
     </form>
 
     <form>
-      <input type="button" onclick="window.location.href = 'http://192.168.10.28/graph.html';" value="Graph"/>
+      <input type="button" onclick="window.location.href = 'http://192.168.178.38/graph.html';" value="Graph"/>
     </form>
 
-<iframe src="http://192.168.10.28:3000/d-solo/ba6d4a47-74d9-490a-90bc-d4a9484380a9/crypto?orgId=1&from=1682959450000&to=1682970118000&theme=dark&panelId=3" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://192.168.178.38:3000/d-solo/ba6d4a47-74d9-490a-90bc-d4a9484380a9/crypto?orgId=1&from=1682959450000&to=1682970118000&theme=dark&panelId=3" width="450" height="200" frameborder="0"></iframe>
     <script>
         document.getElementById("fanStatus").innerHTML = "{}";
         document.getElementById("timerStatus").innerHTML = "{}";
