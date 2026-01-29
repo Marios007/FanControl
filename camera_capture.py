@@ -8,7 +8,7 @@ from pathlib import Path
 from picamera2 import Picamera2
 import time
 
-OUTPUT_DIR = Path("/home/pi/captures")
+OUTPUT_DIR = Path("/home/mario/RSA")
 RESOLUTION = (1920, 1080)  # Breite, Höhe in Pixeln
 MAX_FILES = 50  # Maximale Anzahl gespeicherter Fotos
 INTERVAL = 60  # Sekunden zwischen Aufnahmen
