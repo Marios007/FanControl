@@ -20,7 +20,7 @@ SMB_FOLDER = "RaspberryCaptures"  # Unterordner auf dem NAS
 # Kamera Konfiguration
 RESOLUTION = (1920, 1080)
 MAX_FILES = 50
-INTERVAL = 60
+INTERVAL = 5
 
 
 def get_smb_connection():
