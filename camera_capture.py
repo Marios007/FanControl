@@ -20,63 +20,21 @@ SMB_FOLDER = "RaspberryCaptures"  # Unterordner auf dem NAS
 # Kamera Konfiguration
 RESOLUTION = (3280, 2464)
 MAX_FILES = 15
-INTERVAL = 5
+INTERVAL = 30
 
 
 def get_smb_connection():
     """Erstellt SMB-Verbindung zur FritzBox."""
-    print(f"Verbindungsdetails: Server={SMB_SERVER}, User={SMB_USERNAME}, Share={SMB_SHARE}")
-    
-    # Methode 1: Mit Server-Name
-    try:
-        conn = SMBConnection(
-            SMB_USERNAME,
-            SMB_PASSWORD,
-            "raspberry",
-            "FRITZBOX",  # Standard NetBIOS-Name
-            use_ntlm_v2=True,
-            is_direct_tcp=True
-        )
-        if conn.connect(SMB_SERVER, 445):
-            print("Verbunden (Methode 1: NetBIOS FRITZBOX)")
-            return conn
-    except Exception as e:
-        print(f"Methode 1 fehlgeschlagen: {e}")
-    
-    # Methode 2: Ohne NetBIOS
-    try:
-        conn = SMBConnection(
-            SMB_USERNAME,
-            SMB_PASSWORD,
-            "",
-            "",
-            use_ntlm_v2=True,
-            is_direct_tcp=True
-        )
-        if conn.connect(SMB_SERVER, 445):
-            print("Verbunden (Methode 2: Direct TCP)")
-            return conn
-    except Exception as e:
-        print(f"Methode 2 fehlgeschlagen: {e}")
-    
-    # Methode 3: Mit Domain
-    try:
-        conn = SMBConnection(
-            SMB_USERNAME,
-            SMB_PASSWORD,
-            "raspberry",
-            "FRITZBOX",
-            domain="WORKGROUP",
-            use_ntlm_v2=True,
-            is_direct_tcp=True
-        )
-        if conn.connect(SMB_SERVER, 445):
-            print("Verbunden (Methode 3: Mit WORKGROUP)")
-            return conn
-    except Exception as e:
-        print(f"Methode 3 fehlgeschlagen: {e}")
-    
-    raise ConnectionError("Alle Verbindungsmethoden fehlgeschlagen")
+    conn = SMBConnection(
+        SMB_USERNAME,
+        SMB_PASSWORD,
+        "raspberry",
+        "FRITZBOX",
+        use_ntlm_v2=True,
+        is_direct_tcp=True
+    )
+    conn.connect(SMB_SERVER, 445)
+    return conn
 
 
 def list_smb_files(conn):
