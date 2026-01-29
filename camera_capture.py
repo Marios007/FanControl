@@ -11,7 +11,7 @@ import time
 import io
 
 # SMB/NAS Konfiguration
-SMB_SERVER = "fritz.box"  # oder IP-Adresse der FritzBox
+SMB_SERVER = "fritz.nas"  # oder IP-Adresse der FritzBox
 SMB_USERNAME = "fritz4192"
 SMB_PASSWORD = "nagel0924"
 SMB_SHARE = "fritz.nas"  # Standardname bei FritzBox, ggf. anpassen
