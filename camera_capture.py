@@ -11,10 +11,10 @@ import time
 import io
 
 # SMB/NAS Konfiguration
-SMB_SERVER = "FRITZ.NAS"  # oder IP-Adresse der FritzBox
+SMB_SERVER = "192.168.178.1"  # IP-Adresse der FritzBox (ggf. anpassen)
 SMB_USERNAME = "fritz4192"
 SMB_PASSWORD = "nagel0924"
-SMB_SHARE = "fritz.nas"  # Standardname bei FritzBox, ggf. anpassen
+SMB_SHARE = "FRITZ.NAS"  # Freigabe-Name in Großbuchstaben
 SMB_FOLDER = "RaspberryCaptures"  # Unterordner auf dem NAS
 
 # Kamera Konfiguration
