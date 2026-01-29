@@ -18,8 +18,8 @@ SMB_SHARE = "FRITZ.NAS"  # Freigabe-Name in Großbuchstaben
 SMB_FOLDER = "RaspberryCaptures"  # Unterordner auf dem NAS
 
 # Kamera Konfiguration
-RESOLUTION = (1920, 1080)
-MAX_FILES = 50
+RESOLUTION = (3280, 2464)
+MAX_FILES = 15
 INTERVAL = 5
 
 
