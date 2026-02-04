@@ -6,7 +6,7 @@ import threading
 class LedRing:
     """Klasse zur Steuerung des WS2812B LED Rings"""
     
-    def __init__(self, pin=board.D21, num_pixels=12, brightness=0.1):
+    def __init__(self, pin=board.D21, num_pixels=12, brightness=0.5):
         """
         Initialisiere den LED Ring
         
