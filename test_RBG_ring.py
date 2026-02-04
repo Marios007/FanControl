@@ -2,93 +2,79 @@ import time
 import board
 import neopixel
 
-# WS2812B LED Ring Konfiguration (AZ-Delivery 12 LEDs)
-pixel_pin = board.D18
+print('=== WS2812B LED Ring Diagnose ===\n')
+
+# Konfiguration
 num_pixels = 12
-ORDER = neopixel.GRB  # WS2812B verwendet GRB-Reihenfolge
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.3, auto_write=False, pixel_order=ORDER)
+pin_to_test = board.D18  # GPIO 18 (Pin 12)
 
-def clear():
-    """Alle LEDs ausschalten"""
-    pixels.fill((0, 0, 0))
-    pixels.show()
+print(f'GPIO Pin: D18 (GPIO 18, physischer Pin 12)')
+print(f'Anzahl LEDs: {num_pixels}')
+print(f'Chip: WS2812B (AZ-Delivery)\n')
 
-def test_individual_leds():
-    """Jede LED einzeln testen"""
-    print('  Teste jede LED einzeln...')
-    for i in range(num_pixels):
-        clear()
-        pixels[i] = (255, 0, 0)  # Rot
+print('WICHTIG: Prüfen Sie die Verkabelung:')
+print('  LED Ring VCC  -> Raspberry Pi Pin 2 oder 4 (5V)')
+print('  LED Ring GND  -> Raspberry Pi Pin 6 (GND)')
+print('  LED Ring DIN  -> Raspberry Pi Pin 12 (GPIO 18)\n')
+
+# Teste verschiedene Farbreihenfolgen
+color_orders = [
+    (neopixel.GRB, "GRB (Standard WS2812B)"),
+    (neopixel.RGB, "RGB"),
+    (neopixel.RGBW, "RGBW")
+]
+
+for order, order_name in color_orders:
+    try:
+        print(f'\n--- Test mit {order_name} ---')
+        pixels = neopixel.NeoPixel(
+            pin_to_test, 
+            num_pixels, 
+            brightness=1.0,  # Volle Helligkeit für Test
+            auto_write=False, 
+            pixel_order=order
+        )
+        
+        # Test 1: Alle LEDs Rot
+        print('  [1] Alle LEDs ROT (volle Helligkeit)...')
+        pixels.fill((255, 0, 0))
         pixels.show()
-        time.sleep(0.2)
-    clear()
-
-def rainbow_cycle(wait):
-    """Regenbogen-Animation"""
-    for j in range(255):
-        for i in range(num_pixels):
-            pixel_index = (i * 256 // num_pixels) + j
-            pixels[i] = wheel(pixel_index & 255)
+        time.sleep(3)
+        
+        # Test 2: Alle LEDs Grün
+        print('  [2] Alle LEDs GRÜN...')
+        pixels.fill((0, 255, 0))
         pixels.show()
-        time.sleep(wait)
-
-def wheel(pos):
-    """Farbrad für Regenbogen-Effekt"""
-    if pos < 0 or pos > 255:
-        r = g = b = 0
-    elif pos < 85:
-        r = int(pos * 3)
-        g = int(255 - pos * 3)
-        b = 0
-    elif pos < 170:
-        pos -= 85
-        r = int(255 - pos * 3)
-        g = 0
-        b = int(pos * 3)
-    else:
-        pos -= 170
-        r = 0
-        g = int(pos * 3)
-        b = int(255 - pos * 3)
-    return (r, g, b)
-
-print('WS2812B LED Ring Test (AZ-Delivery 12 LEDs)')
-print('[Drücken Sie CTRL + C um das Skript zu beenden!]\n')
-
-# Initialisierung: Alle LEDs ausschalten
-clear()
-time.sleep(0.5)
-
-
-print('Rot (alle LEDs)')
-pixels.fill((255, 0, 0))
-pixels.show()
-time.sleep(10)
+        time.sleep(3)
         
-    #    print('Grün (alle LEDs)')
-    #    pixels.fill((0, 255, 0))
-    #    pixels.show()
-    #    time.sleep(2)
+        # Test 3: Alle LEDs Blau
+        print('  [3] Alle LEDs BLAU...')
+        pixels.fill((0, 0, 255))
+        pixels.show()
+        time.sleep(3)
         
-   #     print('Blau (alle LEDs)')
-   #     pixels.fill((0, 0, 255))
-   #     pixels.show()
-   #     time.sleep(2)
+        # Test 4: Erste LED weiß
+        print('  [4] Erste LED WEISS...')
+        pixels.fill((0, 0, 0))
+        pixels[0] = (255, 255, 255)
+        pixels.show()
+        time.sleep(3)
         
-   #     print('Weiß (alle LEDs)')
-    #    pixels.fill((255, 255, 255))
-     #   pixels.show()
-      #  time.sleep(2)
+        # Ausschalten
+        pixels.fill((0, 0, 0))
+        pixels.show()
+        pixels.deinit()
         
-    #    test_individual_leds()
+        print(f'  ✓ Test mit {order_name} abgeschlossen')
         
-    #    print('Regenbogen-Animation')
-    #    rainbow_cycle(0.001)
-        
-    #    clear()
-    #    time.sleep(1)
+    except Exception as e:
+        print(f'  ✗ Fehler bei {order_name}: {e}')
+        continue
 
-#except KeyboardInterrupt:
- #   print('\nScript Ende!')
-  #  clear()
-   # print('Alle LEDs ausgeschaltet.')
+print('\n=== Diagnose abgeschlossen ===')
+print('\nWenn NICHTS geleuchtet hat:')
+print('1. Prüfen Sie die 5V Stromversorgung am LED Ring')
+print('2. Prüfen Sie, ob GND verbunden ist')
+print('3. Script mit sudo ausführen: sudo python3 test_RBG_ring.py')
+print('4. Testen Sie einen anderen GPIO Pin (z.B. GPIO 21, Pin 40)')
+print('5. Prüfen Sie, ob die LEDs defekt sind (mit Multimeter)')
