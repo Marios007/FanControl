@@ -29,6 +29,7 @@ class Camera:
         
         self.picam = None
         self.timer = None
+        self.is_capturing = False
         print('Kamera Modul initialisiert')
     
     def get_smb_connection(self):
@@ -145,9 +146,27 @@ class Camera:
             timeout_seconds: Zeit in Sekunden bis zum automatischen Beenden (Standard: 300 = 5 Minuten)
             interval_seconds: Intervall zwischen Fotos in Sekunden (Standard: 30 Sekunden)
         """
+        # Verhindere mehrfache gleichzeitige Starts
+        if self.is_capturing:
+            print("Kamera läuft bereits, ignoriere neuen Start")
+            return
+        
         # Stoppe vorherigen Timer falls vorhanden
         if self.timer:
             self.timer.cancel()
+            self.timer = None
+        
+        # Cleanup alte Kamera-Instanz falls vorhanden
+        if self.picam:
+            try:
+                self.picam.stop()
+                self.picam.close()
+                self.picam = None
+                print("Alte Kamera-Instanz gestoppt")
+            except:
+                pass
+        
+        self.is_capturing = True
         
         # Wiederholte Fotos in separatem Thread aufnehmen
         capture_thread = threading.Thread(
@@ -159,8 +178,8 @@ class Camera:
         
         print(f"Kamera gestartet: macht alle {interval_seconds} Sekunden ein Foto für {timeout_seconds} Sekunden")
         
-        # Timer zum automatischen Cleanup
-        self.timer = threading.Timer(timeout_seconds, self._auto_cleanup)
+        # Timer zum automatischen Cleanup (mit 5 Sekunden Puffer)
+        self.timer = threading.Timer(timeout_seconds + 5, self._auto_cleanup)
         self.timer.start()
     
     def _capture_repeatedly(self, duration_seconds, interval_seconds):
@@ -197,7 +216,7 @@ class Camera:
             print(f"Kamera gestartet (EV: {self.exposure_value})")
             
             # Wiederholte Fotos machen
-            while (time.time() - start_time) < duration_seconds:
+            while (time.time() - start_time) < duration_seconds and self.is_capturing:
                 try:
                     self.capture_photo(smb_conn)
                 except Exception as e:
@@ -205,7 +224,7 @@ class Camera:
                 
                 # Warte bis zum nächsten Intervall (nur wenn noch Zeit übrig ist)
                 elapsed = time.time() - start_time
-                if (elapsed + interval_seconds) < duration_seconds:
+                if (elapsed + interval_seconds) < duration_seconds and self.is_capturing:
                     time.sleep(interval_seconds)
                 else:
                     break
@@ -215,6 +234,7 @@ class Camera:
             if self.picam:
                 try:
                     self.picam.stop()
+                    self.picam.close()
                     self.picam = None
                     print("Kamera gestoppt")
                 except:
@@ -226,13 +246,16 @@ class Camera:
                 except:
                     pass
             
+            self.is_capturing = False
             print("Wiederholte Foto-Aufnahme beendet")
     
     def _auto_cleanup(self):
         """Automatisches Cleanup nach Timeout"""
+        self.is_capturing = False
         if self.picam:
             try:
                 self.picam.stop()
+                self.picam.close()
                 self.picam = None
                 print("Kamera automatisch nach Timeout gestoppt")
             except:
@@ -241,12 +264,14 @@ class Camera:
     
     def cleanup(self):
         """Aufräumen beim Beenden"""
+        self.is_capturing = False
         if self.timer:
             self.timer.cancel()
             self.timer = None
         if self.picam:
             try:
                 self.picam.stop()
+                self.picam.close()
             except:
                 pass
             self.picam = None
