@@ -5,6 +5,7 @@ from sensor import *
 from logger import *
 from cryptoApiLogger import *
 from led_ring import LedRing
+from camera import Camera
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 host_name = '192.168.178.38'  # Change this to your Raspberry Pi IP address
@@ -80,6 +81,10 @@ class MyServer(BaseHTTPRequestHandler):
         elif self.path=='/lighton' or self.path=='/lighton?':
             led_ring.light_on(300)  # 5 Minuten = 300 Sekunden
             print("LED Licht eingeschaltet für 5 Minuten")
+        
+        elif self.path=='/startcamera' or self.path=='/startcamera?':
+            camera.start_capture_with_timeout(300)  # 5 Minuten = 300 Sekunden
+            print("Kamera gestartet, macht ein Foto")
 
         self.wfile.write(html.format(temp, humid, pressure, gpuTemp[5:] ).encode("utf-8"))
 
@@ -94,6 +99,7 @@ if __name__ == '__main__':
     
     sensor = Sensor()
     led_ring = LedRing()
+    camera = Camera()
     crypto = CryptoApiLogger()
     crypto.writeData()
     
@@ -108,11 +114,13 @@ if __name__ == '__main__':
         
     except KeyboardInterrupt:
         led_ring.cleanup()
+        camera.cleanup()
         logger.closeDB()
         crypto.closeDB()
         http_server.server_close()
     except:
         led_ring.cleanup()
+        camera.cleanup()
         logger.closeDB()
         crypto.closeDB()
         http_server.server_close()
