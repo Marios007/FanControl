@@ -21,7 +21,7 @@ def test_individual_leds():
     print('  Teste jede LED einzeln...')
     for i in range(num_pixels):
         clear()
-        pixels[i] = (0, 255, 0)  # GRB: Rot
+        pixels[i] = (255, 0, 0)  # RGB: Rot
         pixels.show()
         time.sleep(0.2)
     clear()
@@ -36,7 +36,7 @@ def rainbow_cycle(wait):
         time.sleep(wait)
 
 def wheel(pos):
-    """Farbrad für Regenbogen-Effekt - GRB Format für WS2812B"""
+    """Farbrad für Regenbogen-Effekt"""
     if pos < 0 or pos > 255:
         r = g = b = 0
     elif pos < 85:
@@ -53,7 +53,7 @@ def wheel(pos):
         r = 0
         g = int(pos * 3)
         b = int(255 - pos * 3)
-    return (g, r, b)  # GRB statt RGB!
+    return (r, g, b)  # RGB - Bibliothek konvertiert zu GRB
 
 print('WS2812B LED Ring Test (AZ-Delivery 12 LEDs)')
 print('[Drücken Sie CTRL + C um das Skript zu beenden!]\n')
@@ -65,22 +65,22 @@ time.sleep(0.5)
 try:
     while True:
         print('Rot (alle LEDs)')
-        pixels.fill((0, 255, 0))  # GRB: G=0, R=255, B=0
+        pixels.fill((255, 0, 0))  # RGB: Rot
         pixels.show()
         time.sleep(2)
         
         print('Grün (alle LEDs)')
-        pixels.fill((255, 0, 0))  # GRB: G=255, R=0, B=0
+        pixels.fill((0, 255, 0))  # RGB: Grün
         pixels.show()
         time.sleep(2)
         
         print('Blau (alle LEDs)')
-        pixels.fill((0, 0, 255))  # GRB: G=0, R=0, B=255
+        pixels.fill((0, 0, 255))  # RGB: Blau
         pixels.show()
         time.sleep(2)
         
         print('Weiß (alle LEDs)')
-        pixels.fill((255, 255, 255))  # GRB: alle an
+        pixels.fill((255, 255, 255))  # RGB: Weiß
         pixels.show()
         time.sleep(2)
         
