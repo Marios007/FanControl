@@ -1,0 +1,31 @@
+# Fan Control Service - Wichtige Befehle
+
+## Installation / Update des Service
+sudo cp fancontrol.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable fancontrol
+sudo systemctl start fancontrol
+
+## Service Steuerung
+sudo systemctl start fancontrol       # Service starten
+sudo systemctl stop fancontrol        # Service stoppen
+sudo systemctl restart fancontrol     # Service neustarten
+sudo systemctl status fancontrol      # Status anzeigen
+
+## Autostart
+sudo systemctl enable fancontrol      # Autostart aktivieren
+sudo systemctl disable fancontrol     # Autostart deaktivieren
+
+## Logs und Fehlersuche
+sudo journalctl -u fancontrol -f      # Logs live anzeigen
+sudo journalctl -u fancontrol -n 50   # Letzte 50 Log-Einträge
+sudo journalctl -u fancontrol --since today  # Logs von heute
+
+## Manueller Start (zum Testen)
+python3 /home/mario/Code/FanControl/simple_server.py
+
+## Service komplett entfernen
+sudo systemctl stop fancontrol
+sudo systemctl disable fancontrol
+sudo rm /etc/systemd/system/fancontrol.service
+sudo systemctl daemon-reload
