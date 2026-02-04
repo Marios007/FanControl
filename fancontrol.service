@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=simple
 User=mario
-WorkingDirectory=/home/pi/FanControl
-ExecStart=/usr/bin/python3 /home/pi/FanControl/simple_server.py
+WorkingDirectory=/home/Code/DanControl
+ExecStart=/usr/bin/python3 /home/Code/DanControl/simple_server.py
 Restart=always
 RestartSec=10
 
