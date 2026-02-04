@@ -4,7 +4,7 @@ import neopixel
 pixel_pin = board.D18
 num_pixels = 12
 ORDER = neopixel.GRB
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER)
+pixel = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER)
 
 def wheel(pos):
     if pos < 0 or pos > 255:
@@ -39,11 +39,16 @@ def rainbow_cycle(wait):
 try:
     while True:
         print('\nRainbow cycle 1')
-        pixel.fill((255, 0, 0)) pixel.show() time.sleep(1)
+        pixel.fill((255, 0, 0)) 
+        pixel.show() 
+        time.sleep(1)
         print('Regenbogenzyklus 2')
-        pixel.fill((0, 255, 0)) pixel.show() time.sleep(1)
+        pixel.fill((0, 255, 0)) 
+        pixel.show() 
+        time.sleep(1)
         print('Regenbogenzyklus 3')
-        pixel.fill((0, 0, 255)) pixel.show()
+        pixel.fill((0, 0, 255)) 
+        pixel.show()
         time.sleep(1)
         rainbow_cycle(0.001)
 
