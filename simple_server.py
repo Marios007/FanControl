@@ -110,12 +110,12 @@ class MyServer(BaseHTTPRequestHandler):
         elif self.path=='/lighton' or self.path=='/lighton?':
             led_ring.light_on(300)  # 5 Minuten = 300 Sekunden
             print("LED Licht eingeschaltet für 5 Minuten")
-            message = '<div class="message">✓ LED Licht eingeschaltet für 5 Minuten</div>'
+            message = '<div class="message">LED light turned on for 5 minutes</div>'
         
         elif self.path=='/startcamera' or self.path=='/startcamera?':
             camera.start_capture_with_timeout(300, 30)  # 5 Minuten, alle 30 Sekunden
             print("Kamera gestartet, macht alle 30 Sekunden ein Foto für 5 Minuten")
-            message = '<div class="message">✓ Kamera gestartet - 10 Fotos in 5 Minuten</div>'
+            message = '<div class="message">Camera started - 10 photos in 5 minutes</div>'
 
         self.wfile.write(html.format(message, temp, humid, pressure, gpuTemp[5:] ).encode("utf-8"))
 

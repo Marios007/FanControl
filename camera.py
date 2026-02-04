@@ -71,27 +71,32 @@ class Camera:
         file_obj = io.BytesIO(image_data)
         conn.storeFile(self.smb_share, f"/{self.smb_folder}/{filename}", file_obj)
     
-    def capture_photo(self):
+    def capture_photo(self, smb_conn=None):
         """Macht ein einzelnes Foto und lädt es auf den SMB Server"""
         try:
-            # SMB-Verbindung herstellen
-            print("Verbinde mit FritzNAS...")
-            smb_conn = self.get_smb_connection()
-            print(f"✓ Verbunden mit {self.smb_server}")
+            # SMB-Verbindung herstellen falls nicht übergeben
+            close_conn = False
+            if smb_conn is None:
+                print("Verbinde mit FritzNAS...")
+                smb_conn = self.get_smb_connection()
+                print(f"✓ Verbunden mit {self.smb_server}")
+                close_conn = True
+                
+                # Zielordner auf NAS erstellen falls nicht vorhanden
+                try:
+                    smb_conn.createDirectory(self.smb_share, f"/{self.smb_folder}")
+                except:
+                    pass  # Ordner existiert bereits
             
-            # Zielordner auf NAS erstellen falls nicht vorhanden
-            try:
-                smb_conn.createDirectory(self.smb_share, f"/{self.smb_folder}")
-            except:
-                pass  # Ordner existiert bereits
-            
-            # Kamera initialisieren
-            print("Initialisiere Kamera...")
-            self.picam = Picamera2()
-            config = self.picam.create_still_configuration(main={"size": self.resolution})
-            self.picam.configure(config)
-            self.picam.start()
-            print("Kamera gestartet")
+            # Kamera initialisieren falls noch nicht vorhanden
+            camera_was_none = self.picam is None
+            if self.picam is None:
+                print("Initialisiere Kamera...")
+                self.picam = Picamera2()
+                config = self.picam.create_still_configuration(main={"size": self.resolution})
+                self.picam.configure(config)
+                self.picam.start()
+                print("Kamera gestartet")
             
             # Zeitstempel für Dateiname
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -108,17 +113,20 @@ class Camera:
             # Alte Fotos löschen falls Limit überschritten
             self.trim_smb_directory(smb_conn, self.max_files)
             
-            # Aufräumen
-            self.picam.stop()
-            smb_conn.close()
-            self.picam = None
+            # Aufräumen nur wenn Kamera neu initialisiert wurde und Verbindung lokal erstellt
+            if camera_was_none and close_conn:
+                self.picam.stop()
+                self.picam = None
+                print("Kamera gestoppt")
             
-            print("Kamera-Aufnahme abgeschlossen")
+            if close_conn:
+                smb_conn.close()
+            
             return True
             
         except Exception as e:
             print(f"Fehler bei Kamera-Aufnahme: {e}")
-            if self.picam:
+            if self.picam and camera_was_none:
                 try:
                     self.picam.stop()
                 except:
@@ -154,21 +162,58 @@ class Camera:
     
     def _capture_repeatedly(self, duration_seconds, interval_seconds):
         """
-        Macht wiederholt Fotos in festgelegten Intervallen
+        smb_conn = None
         
-        Args:
-            duration_seconds: Gesamtdauer in Sekunden
-            interval_seconds: Intervall zwischen Fotos in Sekunden
-        """
-        import time
-        start_time = time.time()
-        
-        while (time.time() - start_time) < duration_seconds:
-            try:
-                self.capture_photo()
-            except Exception as e:
-                print(f"Fehler bei wiederholter Aufnahme: {e}")
+        try:
+            # Einmalig: SMB-Verbindung und Kamera initialisieren
+            print("Verbinde mit FritzNAS...")
+            smb_conn = self.get_smb_connection()
+            print(f"✓ Verbunden mit {self.smb_server}")
             
+            # Zielordner auf NAS erstellen falls nicht vorhanden
+            try:
+                smb_conn.createDirectory(self.smb_share, f"/{self.smb_folder}")
+            except:
+                pass  # Ordner existiert bereits
+            
+            print("Initialisiere Kamera...")
+            self.picam = Picamera2()
+            config = self.picam.create_still_configuration(main={"size": self.resolution})
+            self.picam.configure(config)
+            self.picam.start()
+            print("Kamera gestartet")
+            
+            # Wiederholte Fotos machen
+            while (time.time() - start_time) < duration_seconds:
+                try:
+                    self.capture_photo(smb_conn)
+                except Exception as e:
+                    print(f"Fehler bei wiederholter Aufnahme: {e}")
+                
+                # Warte bis zum nächsten Intervall (nur wenn noch Zeit übrig ist)
+                elapsed = time.time() - start_time
+                if (elapsed + interval_seconds) < duration_seconds:
+                    time.sleep(interval_seconds)
+                else:
+                    break
+            
+        finally:
+            # Aufräumen
+            if self.picam:
+                try:
+                    self.picam.stop()
+                    self.picam = None
+                    print("Kamera gestoppt")
+                except:
+                    pass
+            
+            if smb_conn:
+                try:
+                    smb_conn.close()
+                except:
+                    pass
+            
+                
             # Warte bis zum nächsten Intervall (nur wenn noch Zeit übrig ist)
             elapsed = time.time() - start_time
             if (elapsed + interval_seconds) < duration_seconds:
