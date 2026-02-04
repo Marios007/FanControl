@@ -89,7 +89,7 @@ try:
         test_individual_leds()
         
         print('Regenbogen-Animation (10 Sekunden)')
-        rainbow_cycle(10)
+        rainbow_cycle(5)
         
         clear()
         time.sleep(1)
