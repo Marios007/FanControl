@@ -25,6 +25,7 @@ class Camera:
         # Kamera Konfiguration
         self.resolution = (3280, 2464)
         self.max_files = 15
+        self.exposure_value = config.camera_ev
         
         self.picam = None
         self.timer = None
@@ -93,10 +94,12 @@ class Camera:
             if self.picam is None:
                 print("Initialisiere Kamera...")
                 self.picam = Picamera2()
-                config = self.picam.create_still_configuration(main={"size": self.resolution})
-                self.picam.configure(config)
+                cam_config = self.picam.create_still_configuration(main={"size": self.resolution})
+                self.picam.configure(cam_config)
                 self.picam.start()
-                print("Kamera gestartet")
+                # Belichtungskompensation setzen
+                self.picam.set_controls({"ExposureValue": self.exposure_value})
+                print(f"Kamera gestartet (EV: {self.exposure_value})")
             
             # Zeitstempel für Dateiname
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -186,10 +189,12 @@ class Camera:
             
             print("Initialisiere Kamera...")
             self.picam = Picamera2()
-            config = self.picam.create_still_configuration(main={"size": self.resolution})
-            self.picam.configure(config)
+            cam_config = self.picam.create_still_configuration(main={"size": self.resolution})
+            self.picam.configure(cam_config)
             self.picam.start()
-            print("Kamera gestartet")
+            # Belichtungskompensation setzen
+            self.picam.set_controls({"ExposureValue": self.exposure_value})
+            print(f"Kamera gestartet (EV: {self.exposure_value})")
             
             # Wiederholte Fotos machen
             while (time.time() - start_time) < duration_seconds:
