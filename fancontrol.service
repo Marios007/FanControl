@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=mario
 WorkingDirectory=/home/Code/FanControl
-ExecStart=/usr/bin/python3 /home/Code/FanControl/simple_server.py
+ExecStart=/usr/bin/python3 /home/mario/Code/FanControl/simple_server.py
 Restart=always
 RestartSec=10
 
