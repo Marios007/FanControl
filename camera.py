@@ -162,6 +162,14 @@ class Camera:
     
     def _capture_repeatedly(self, duration_seconds, interval_seconds):
         """
+        Macht wiederholt Fotos in festgelegten Intervallen
+        
+        Args:
+            duration_seconds: Gesamtdauer in Sekunden
+            interval_seconds: Intervall zwischen Fotos in Sekunden
+        """
+        import time
+        start_time = time.time()
         smb_conn = None
         
         try:
@@ -213,15 +221,7 @@ class Camera:
                 except:
                     pass
             
-                
-            # Warte bis zum nächsten Intervall (nur wenn noch Zeit übrig ist)
-            elapsed = time.time() - start_time
-            if (elapsed + interval_seconds) < duration_seconds:
-                time.sleep(interval_seconds)
-            else:
-                break
-        
-        print("Wiederholte Foto-Aufnahme beendet")
+            print("Wiederholte Foto-Aufnahme beendet")
     
     def _auto_cleanup(self):
         """Automatisches Cleanup nach Timeout"""
