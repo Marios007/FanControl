@@ -125,26 +125,57 @@ class Camera:
                 self.picam = None
             return False
     
-    def start_capture_with_timeout(self, timeout_seconds=300):
+    def start_capture_with_timeout(self, timeout_seconds=300, interval_seconds=30):
         """
-        Startet Foto-Aufnahme und beendet automatisch nach timeout
+        Startet wiederholte Foto-Aufnahmen und beendet automatisch nach timeout
         
         Args:
             timeout_seconds: Zeit in Sekunden bis zum automatischen Beenden (Standard: 300 = 5 Minuten)
+            interval_seconds: Intervall zwischen Fotos in Sekunden (Standard: 30 Sekunden)
         """
         # Stoppe vorherigen Timer falls vorhanden
         if self.timer:
             self.timer.cancel()
         
-        # Foto in separatem Thread aufnehmen
-        capture_thread = threading.Thread(target=self.capture_photo)
+        # Wiederholte Fotos in separatem Thread aufnehmen
+        capture_thread = threading.Thread(
+            target=self._capture_repeatedly, 
+            args=(timeout_seconds, interval_seconds)
+        )
+        capture_thread.daemon = True
         capture_thread.start()
         
-        print(f"Kamera gestartet, wird automatisch nach {timeout_seconds} Sekunden beendet")
+        print(f"Kamera gestartet: macht alle {interval_seconds} Sekunden ein Foto für {timeout_seconds} Sekunden")
         
-        # Timer zum automatischen Cleanup (falls Kamera noch läuft)
+        # Timer zum automatischen Cleanup
         self.timer = threading.Timer(timeout_seconds, self._auto_cleanup)
         self.timer.start()
+    
+    def _capture_repeatedly(self, duration_seconds, interval_seconds):
+        """
+        Macht wiederholt Fotos in festgelegten Intervallen
+        
+        Args:
+            duration_seconds: Gesamtdauer in Sekunden
+            interval_seconds: Intervall zwischen Fotos in Sekunden
+        """
+        import time
+        start_time = time.time()
+        
+        while (time.time() - start_time) < duration_seconds:
+            try:
+                self.capture_photo()
+            except Exception as e:
+                print(f"Fehler bei wiederholter Aufnahme: {e}")
+            
+            # Warte bis zum nächsten Intervall (nur wenn noch Zeit übrig ist)
+            elapsed = time.time() - start_time
+            if (elapsed + interval_seconds) < duration_seconds:
+                time.sleep(interval_seconds)
+            else:
+                break
+        
+        print("Wiederholte Foto-Aufnahme beendet")
     
     def _auto_cleanup(self):
         """Automatisches Cleanup nach Timeout"""
