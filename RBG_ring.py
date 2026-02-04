@@ -3,10 +3,13 @@ import board
 import neopixel
 
 # WS2812B LED Ring Konfiguration (AZ-Delivery 12 LEDs)
-pixel_pin = board.D18
+pixel_pin = board.D21  # GPIO 21 (Pin 40) - Alternative zu GPIO 18
 num_pixels = 12
 ORDER = neopixel.GRB  # WS2812B verwendet GRB-Reihenfolge
 pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.3, auto_write=False, pixel_order=ORDER)
+
+print(f'Verwende GPIO 21 (Pin 40)')
+print('WICHTIG: Verbinden Sie DIN vom LED Ring mit Pin 40!\n')
 
 def clear():
     """Alle LEDs ausschalten"""
