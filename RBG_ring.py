@@ -30,8 +30,8 @@ def rainbow_cycle(wait):
     for j in range(255):
         for i in range(num_pixels):
             pixel_index = (i * 256 // num_pixels) + j
-            pixels[i] = wheel(pixel_index & 255)
-        pixels.show()
+            pixel[i] = wheel(pixel_index & 255)
+        pixel.show()
         time.sleep(wait)
     print('U64 LED Matrix Module test script')
     print('[Drücken Sie CTRL + C um das Skript zu beenden!]')
