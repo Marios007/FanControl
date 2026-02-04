@@ -7,6 +7,7 @@ from cryptoApiLogger import *
 from led_ring import LedRing
 from camera import Camera
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import config
 
 host_name = '192.168.178.38'  # Change this to your Raspberry Pi IP address
 host_port = 8000
@@ -35,12 +36,37 @@ class MyServer(BaseHTTPRequestHandler):
 <head>
     <title>Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        body {{
+            max-width: 100%;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }}
+        .container {{
+            max-width: 500px;
+            margin: 0 auto;
+        }}
+        .message {{
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }}
+        iframe {{
+            width: 100%;
+            height: 400px;
+            border: none;
+        }}
+    </style>
 </head>
-<body style="width:400px; margin: 10px auto;">
+<body>
+    <div class="container">
     <h1>HOME</h1>
-    
-    <p></p>
-
+    {}
     <form action="/lighton">
         <input type="submit" style="font-size: large; width: 100%; padding: 8px;" value="Light ON" />
     </form>
@@ -53,7 +79,7 @@ class MyServer(BaseHTTPRequestHandler):
     
     <p></p>
 
-<iframe src="http://192.168.178.38:3000/d-solo/ae86d7eb-af8a-47e3-80ea-426963f73ee3/kitchen?orgId=1&from=1770043276284&to=1770216076284&timezone=browser&panelId=1&__feature.dashboardSceneSolo" width="600" height="400" frameborder="0"></iframe>
+<iframe src="http://192.168.178.38:3000/d-solo/ae86d7eb-af8a-47e3-80ea-426963f73ee3/kitchen?orgId=1&from=now-6h&to=now&timezone=browser&panelId=1&__feature.dashboardSceneSolo&refresh=10m"></iframe>
     
     <p></p>
     <p>Temperature:  {}</p>
@@ -61,6 +87,7 @@ class MyServer(BaseHTTPRequestHandler):
     <p>Pressure:  {}</p>
     <p></p>
     <p>Current GPU temperature is {}</p>
+    </div>
 </body>
 </html>
         '''
@@ -74,6 +101,8 @@ class MyServer(BaseHTTPRequestHandler):
         humid = sensor.getHumidStr()
         pressure = sensor.getPressureStr()
         
+        message = ""
+        
         if self.path=='/':
             GPIO.setmode(GPIO.BCM)
             GPIO.setwarnings(False)
@@ -81,12 +110,14 @@ class MyServer(BaseHTTPRequestHandler):
         elif self.path=='/lighton' or self.path=='/lighton?':
             led_ring.light_on(300)  # 5 Minuten = 300 Sekunden
             print("LED Licht eingeschaltet für 5 Minuten")
+            message = '<div class="message">✓ LED Licht eingeschaltet für 5 Minuten</div>'
         
         elif self.path=='/startcamera' or self.path=='/startcamera?':
-            camera.start_capture_with_timeout(300)  # 5 Minuten = 300 Sekunden
-            print("Kamera gestartet, macht ein Foto")
+            camera.start_capture_with_timeout(300, 30)  # 5 Minuten, alle 30 Sekunden
+            print("Kamera gestartet, macht alle 30 Sekunden ein Foto für 5 Minuten")
+            message = '<div class="message">✓ Kamera gestartet - 10 Fotos in 5 Minuten</div>'
 
-        self.wfile.write(html.format(temp, humid, pressure, gpuTemp[5:] ).encode("utf-8"))
+        self.wfile.write(html.format(message, temp, humid, pressure, gpuTemp[5:] ).encode("utf-8"))
 
 
 if __name__ == '__main__':

@@ -8,18 +8,19 @@ from picamera2 import Picamera2
 from smb.SMBConnection import SMBConnection
 import threading
 import io
+import config
 
 class Camera:
     """Klasse zur Steuerung der Raspberry Pi Kamera"""
     
     def __init__(self):
         """Initialisiere Kamera-Konfiguration"""
-        # SMB/NAS Konfiguration
-        self.smb_server = "192.168.178.1"
-        self.smb_username = "fritz4192"
-        self.smb_password = "nagel0924"
-        self.smb_share = "FRITZ.NAS"
-        self.smb_folder = "RaspberryCaptures"
+        # SMB/NAS Konfiguration aus config.py
+        self.smb_server = config.smb_server
+        self.smb_username = config.smb_username
+        self.smb_password = config.smb_password
+        self.smb_share = config.smb_share
+        self.smb_folder = config.smb_folder
         
         # Kamera Konfiguration
         self.resolution = (3280, 2464)
