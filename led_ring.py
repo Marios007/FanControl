@@ -6,14 +6,14 @@ import threading
 class LedRing:
     """Klasse zur Steuerung des WS2812B LED Rings"""
     
-    def __init__(self, pin=board.D21, num_pixels=12, brightness=0.3):
+    def __init__(self, pin=board.D21, num_pixels=12, brightness=0.1):
         """
         Initialisiere den LED Ring
         
         Args:
             pin: GPIO Pin (Standard: D21/GPIO 21/Pin 40)
             num_pixels: Anzahl der LEDs (Standard: 12)
-            brightness: Helligkeit 0.0-1.0 (Standard: 0.3)
+            brightness: Helligkeit 0.0-1.0 (Standard: 0.1)
         """
         self.num_pixels = num_pixels
         self.pixels = neopixel.NeoPixel(
