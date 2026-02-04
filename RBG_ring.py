@@ -33,23 +33,25 @@ def rainbow_cycle(wait):
             pixel[i] = wheel(pixel_index & 255)
         pixel.show()
         time.sleep(wait)
-    print('U64 LED Matrix Module test script')
-    print('[Drücken Sie CTRL + C um das Skript zu beenden!]')
+
+print('RGB LED Ring test script')
+print('[Drücken Sie CTRL + C um das Skript zu beenden!]')
 
 try:
     while True:
-        print('\nRainbow cycle 1')
+        print('\nRot')
         pixel.fill((255, 0, 0)) 
         pixel.show() 
         time.sleep(1)
-        print('Regenbogenzyklus 2')
+        print('Grün')
         pixel.fill((0, 255, 0)) 
         pixel.show() 
         time.sleep(1)
-        print('Regenbogenzyklus 3')
+        print('Blau')
         pixel.fill((0, 0, 255)) 
         pixel.show()
         time.sleep(1)
+        print('Regenbogenzyklus')
         rainbow_cycle(0.001)
 
 
