@@ -26,9 +26,11 @@ def test_individual_leds():
         time.sleep(0.2)
     clear()
 
-def rainbow_cycle(wait):
-    """Regenbogen-Animation"""
-    for j in range(255):
+def rainbow_cycle(duration):
+    """Regenbogen-Animation für bestimmte Dauer"""
+    frames = 255
+    wait = duration / frames  # Wartezeit pro Frame
+    for j in range(frames):
         for i in range(num_pixels):
             pixel_index = (i * 256 // num_pixels) + j
             pixels[i] = wheel(pixel_index & 255)
@@ -84,8 +86,8 @@ try:
         pixels.show()
         time.sleep(2)
         
-        test_individual_leds()
-        
+        test_individual_leds() (10 Sekunden)')
+        rainbow_cycle(10
         print('Regenbogen-Animation')
         rainbow_cycle(0.001)
         
