@@ -42,13 +42,13 @@ class MyServer(BaseHTTPRequestHandler):
     <p></p>
 
     <form action="/lighton">
-        <input type="submit" style="font-size: xx-large; width: 100%; padding: 10px;" value="Light ON" />
+        <input type="submit" style="font-size: large; width: 100%; padding: 8px;" value="Light ON" />
     </form>
     
     <p></p>
     
     <form action="/startcamera">
-        <input type="submit" style="font-size: xx-large; width: 100%; padding: 10px;" value="Start Camera" />
+        <input type="submit" style="font-size: large; width: 100%; padding: 8px;" value="Start Camera" />
     </form>
     
     <p></p>
