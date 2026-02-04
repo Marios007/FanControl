@@ -4,6 +4,7 @@ import os
 from sensor import *
 from logger import *
 from cryptoApiLogger import *
+from led_ring import LedRing
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 host_name = '192.168.178.38'  # Change this to your Raspberry Pi IP address
@@ -35,7 +36,7 @@ class MyServer(BaseHTTPRequestHandler):
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 </head>
 <body style="width:400px; margin: 10px auto;">
-    <h1>Sensor Monitor</h1>
+    <h1>HOME</h1>
     
     <p></p>
 
@@ -51,11 +52,7 @@ class MyServer(BaseHTTPRequestHandler):
     
     <p></p>
 
-    <form>
-      <input type="button" onclick="window.location.href = 'http://192.168.178.38/graph.html';" value="Graph"/>
-    </form>
-
-<iframe src="http://192.168.178.38:3000/d-solo/ae86d7eb-af8a-47e3-80ea-426963f73ee3/kitchen?orgId=1&from=1770043276284&to=1770216076284&timezone=browser&panelId=1&__feature.dashboardSceneSolo" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://192.168.178.38:3000/d-solo/ae86d7eb-af8a-47e3-80ea-426963f73ee3/kitchen?orgId=1&from=1770043276284&to=1770216076284&timezone=browser&panelId=1&__feature.dashboardSceneSolo" width="600" height="400" frameborder="0"></iframe>
     
     <p></p>
     <p>Temperature:  {}</p>
@@ -79,6 +76,10 @@ class MyServer(BaseHTTPRequestHandler):
         if self.path=='/':
             GPIO.setmode(GPIO.BCM)
             GPIO.setwarnings(False)
+        
+        elif self.path=='/lighton' or self.path=='/lighton?':
+            led_ring.light_on(300)  # 5 Minuten = 300 Sekunden
+            print("LED Licht eingeschaltet für 5 Minuten")
 
         self.wfile.write(html.format(temp, humid, pressure, gpuTemp[5:] ).encode("utf-8"))
 
@@ -92,6 +93,7 @@ if __name__ == '__main__':
         http_server = HTTPServer((host_name, host_port), MyServer)
     
     sensor = Sensor()
+    led_ring = LedRing()
     crypto = CryptoApiLogger()
     crypto.writeData()
     
@@ -105,10 +107,12 @@ if __name__ == '__main__':
         http_server.serve_forever()
         
     except KeyboardInterrupt:
+        led_ring.cleanup()
         logger.closeDB()
         crypto.closeDB()
         http_server.server_close()
     except:
+        led_ring.cleanup()
         logger.closeDB()
         crypto.closeDB()
         http_server.server_close()
