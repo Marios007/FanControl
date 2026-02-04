@@ -86,10 +86,10 @@ try:
         pixels.show()
         time.sleep(2)
         
-        test_individual_leds() (10 Sekunden)')
-        rainbow_cycle(10
-        print('Regenbogen-Animation')
-        rainbow_cycle(0.001)
+        test_individual_leds()
+        
+        print('Regenbogen-Animation (10 Sekunden)')
+        rainbow_cycle(10)
         
         clear()
         time.sleep(1)
