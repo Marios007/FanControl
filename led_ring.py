@@ -2,6 +2,7 @@ import time
 import board
 import neopixel
 import threading
+import config
 
 class LedRing:
     """Klasse zur Steuerung des WS2812B LED Rings"""
@@ -24,8 +25,9 @@ class LedRing:
             pixel_order=neopixel.GRB
         )
         self.timer = None
+        self.led_indices = config.led_indices
         self.clear()
-        print(f'LED Ring initialisiert: {num_pixels} LEDs auf GPIO 21 (Pin 40)')
+        print(f'LED Ring initialisiert: {num_pixels} LEDs auf GPIO 21 (Pin 40), aktive LEDs: {self.led_indices}')
     
     def clear(self):
         """Alle LEDs ausschalten"""
@@ -43,8 +45,12 @@ class LedRing:
         self.pixels.show()
     
     def white(self):
-        """Alle LEDs weiß"""
-        self.set_color((255, 255, 255))
+        """Konfigurierte LEDs weiß"""
+        self.clear()
+        for i in self.led_indices:
+            if 0 <= i < self.num_pixels:
+                self.pixels[i] = (255, 255, 255)
+        self.pixels.show()
     
     def red(self):
         """Alle LEDs rot"""
