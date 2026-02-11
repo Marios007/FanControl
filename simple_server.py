@@ -79,6 +79,8 @@ class MyServer(BaseHTTPRequestHandler):
     
     <p></p>
 
+<p><a href="http://192.168.178.1/nas#/files/RaspberryCaptures" target="_blank">Aufgenommene Bilder ansehen</a></p>
+
 <iframe src="http://192.168.178.38:3000/d-solo/ae86d7eb-af8a-47e3-80ea-426963f73ee3/kitchen?orgId=1&from=now-6h&to=now&timezone=browser&panelId=1&__feature.dashboardSceneSolo&refresh=10m"></iframe>
     
     <p></p>
