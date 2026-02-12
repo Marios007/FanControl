@@ -24,7 +24,7 @@ class Camera:
         
         # Kamera Konfiguration
         self.resolution = (3280, 2464)
-        self.max_files = 15
+        self.max_files = 2
         self.exposure_value = config.camera_ev
         
         self.picam = None
