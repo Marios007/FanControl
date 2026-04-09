@@ -62,20 +62,21 @@ class MyServer(BaseHTTPRequestHandler):
             border: none;
         }}
     </style>
+    <script>
+        function startLightAndCamera() {{
+            fetch('/lightandcamera').then(() => {{
+                setTimeout(() => {{
+                    location.reload();
+                }}, 500);
+            }});
+        }}
+    </script>
 </head>
 <body>
     <div class="container">
     <h1>HOME</h1>
     {}
-    <form action="/lighton">
-        <input type="submit" style="font-size: large; width: 100%; padding: 8px;" value="Light ON" />
-    </form>
-    
-    <p></p>
-    
-    <form action="/startcamera">
-        <input type="submit" style="font-size: large; width: 100%; padding: 8px;" value="Start Camera" />
-    </form>
+    <button onclick="startLightAndCamera()" style="font-size: large; width: 100%; padding: 8px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Licht + Foto aufnehmen</button>
     
     <p></p>
 
@@ -109,15 +110,12 @@ class MyServer(BaseHTTPRequestHandler):
             GPIO.setmode(GPIO.BCM)
             GPIO.setwarnings(False)
         
-        elif self.path=='/lighton' or self.path=='/lighton?':
+        elif self.path=='/lightandcamera' or self.path=='/lightandcamera?':
             led_ring.light_on(300)  # 5 Minuten = 300 Sekunden
             print("LED Licht eingeschaltet für 5 Minuten")
-            message = '<div class="message">LED light turned on for 5 minutes</div>'
-        
-        elif self.path=='/startcamera' or self.path=='/startcamera?':
             camera.start_capture_with_timeout(300, 30)  # 5 Minuten, alle 30 Sekunden
             print("Kamera gestartet, macht alle 30 Sekunden ein Foto für 5 Minuten")
-            message = '<div class="message">Camera started - 10 photos in 5 minutes</div>'
+            message = '<div class="message">Licht eingeschaltet und Fotos werden aufgenommen!</div>'
 
         self.wfile.write(html.format(message, temp, humid, pressure, gpuTemp[5:] ).encode("utf-8"))
 
