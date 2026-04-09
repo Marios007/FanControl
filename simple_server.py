@@ -76,13 +76,15 @@ class MyServer(BaseHTTPRequestHandler):
     <div class="container">
     <h1>HOME</h1>
     {}
-    <button onclick="startLightAndCamera()" style="font-size: large; width: 100%; padding: 8px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Licht + Foto aufnehmen</button>
+    <button onclick="startLightAndCamera()" style="font-size: large; width: 100%; padding: 8px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Licht An + Foto aufnehmen</button>
     
     <p></p>
 
 <p><a href="http://192.168.178.1/nas#/files/RaspberryCaptures" target="_blank">Aufgenommene Bilder ansehen</a></p>
 
-<iframe src="http://192.168.178.38:3000/d-solo/ae86d7eb-af8a-47e3-80ea-426963f73ee3/kitchen?orgId=1&from=now-6h&to=now&timezone=browser&panelId=1&__feature.dashboardSceneSolo&refresh=10m"></iframe>
+<div onclick="window.open('http://192.168.178.38:3000/d/ae86d7eb-af8a-47e3-80ea-426963f73ee3/kitchen?orgId=1&from=now-24h&to=now&timezone=browser', '_blank')" style="cursor: pointer;">
+<iframe src="http://192.168.178.38:3000/d-solo/ae86d7eb-af8a-47e3-80ea-426963f73ee3/kitchen?orgId=1&from=now-6h&to=now&timezone=browser&panelId=1&__feature.dashboardSceneSolo&refresh=10m" style="pointer-events: none;"></iframe>
+</div>
     
     <p></p>
     <p>Temperature:  {}</p>
